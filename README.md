@@ -1,21 +1,74 @@
 ## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Bill of Materials](#bill-of-materials)
-3. [Pinout & Wiring Diagram](#pinout--wiring-diagram)
-   - [ESP32-S3 Pinout](#1-esp32-s3-pinout-1)
-   - [IO Shield Pinout](#2-io-shield-pinout-2)
-   - [Wiring Diagram](#3-wiring-diagram)
-   - [ESP32-S3 GPIO Mapping](#4-esp32-s3-gpio-mapping)
-   - [Power Distribution & Actuator Wiring](#5-power-distribution--actuator-wiring)
-4. [Sensors](#sensors)
-5. [System Output](#system-output)
-6. [Hardware Architecture](#hardware-architecture)
-7. [Software Architecture](#software-architecture)
-8. [Testing](#testing)
-9. [Limitations and Future Improvements](#limitations-and-future-improvements)
-10. [Conclusion](#conclusion)
-11. [Citations](#citations)
+## Table of Contents
+
+1. [Project Overview](#1-project-overview)
+
+2. [Bill of Materials](#2-bill-of-materials)
+
+3. [Pinout & Wiring Diagram](#3-pinout--wiring-diagram)
+   - [ESP32-S3 Pinout](#esp32-s3-pinout)
+   - [IO Shield Pinout](#io-shield-pinout)
+   - [Wiring Diagram](#wiring-diagram)
+   - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
+   - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
+
+4. [Sensors](#4-sensors)
+   - [Capacitive Soil Moisture Sensor](#capacitive-soil-moisture-sensor)
+   - [SHTC3 Temperature & Humidity Sensor](#shtc3-temperature--humidity-sensor)
+   - [Sensor Calibration](#sensor-calibration)
+
+5. [Automation Logic](#5-automation-logic)
+   - [Soil Moisture Processing](#soil-moisture-processing)
+   - [Automatic Watering Decision](#automatic-watering-decision)
+   - [Relay and Pump Control](#relay-and-pump-control)
+
+6. [Hardware Architecture](#6-hardware-architecture)
+   - [Sensor Layer](#sensor-layer)
+   - [Control Layer](#control-layer)
+   - [Actuator Layer](#actuator-layer)
+   - [Power Architecture](#power-architecture)
+
+7. [Software Architecture](#7-software-architecture)
+   - [ESP32 Firmware](#esp32-firmware)
+   - [Program Initialization](#program-initialization)
+   - [Main Program Loop](#main-program-loop)
+   - [Data Processing](#data-processing)
+
+8. [Network Architecture](#8-network-architecture)
+   - [System Communication Flow](#system-communication-flow)
+   - [ESP32 Network Connection](#esp32-network-connection)
+   - [MQTT Broker](#mqtt-broker)
+
+9. [MQTT Communication](#9-mqtt-communication)
+   - [MQTT Topics](#mqtt-topics)
+   - [Published Sensor Data](#published-sensor-data)
+   - [Subscribed Control Data](#subscribed-control-data)
+   - [Message Format](#message-format)
+
+10. [Server and Visualizer](#10-server-and-visualizer)
+    - [Server-Side Software](#server-side-software)
+    - [MQTT Data Handling](#mqtt-data-handling)
+    - [Data Visualization](#data-visualization)
+
+11. [System Output](#11-system-output)
+    - [Web Browser Interface](#web-browser-interface)
+    - [Displayed Sensor Data](#displayed-sensor-data)
+    - [Pump Status](#pump-status)
+
+12. [Testing](#12-testing)
+    - [Sensor Testing](#sensor-testing)
+    - [Automation Testing](#automation-testing)
+    - [MQTT Communication Testing](#mqtt-communication-testing)
+    - [End-to-End System Testing](#end-to-end-system-testing)
+
+13. [Limitations and Future Improvements](#13-limitations-and-future-improvements)
+
+14. [Conclusion](#14-conclusion)
+
+15. [Citations](#15-citations)
+
+
 
 
 ## 2. Bill of Materials
@@ -69,7 +122,7 @@
 | **Step-Down Buck Converter** | USB A | ESP32-S3 USB C |
 | **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
 
-## 11. Citations:
+## 15. Citations:
 <a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). Sơ đồ chân.  
 <a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). Hình ảnh sản phẩm.
 <!--
