@@ -41,15 +41,10 @@
 
 | Source / Device | Pin / Terminal | Connected To |
 | :--- | :---: | :--- |
-| **12V DC Adapter** | `+` (Positive) | Buck Converter `IN+` & Relay `COM` |
-| | `-` (Ground) | Buck Converter `IN-`, Pump `(-)`, & ESP32 `GND` |
-| **Step-Down Buck Converter** | USB Out | ESP32-S3 USB Port |
-| **1-Channel Relay Module** | `DC+` (Positive) | 12V DC Adapter `+` |
-| | `DC-` (Ground) | 12V DC Adapter `-` |
-| | `COM` (Common) | 12V DC Adapter `+` |
-| | `NC` (Normally Closed) | Water Pump `(+)` |
-| **R385 Water Pump** | `(+)` Positive | Relay Module `NC` |
-| | `(-)` Negative | Relay Module `DC-` |
+| **12V DC Adapter** | `+` (Positive) | Buck Converter `IN+`, Relay `COM`, Relay `DC+` |
+| | `-` (Ground) | Buck Converter `IN-`, Pump `(-)`, Relay `DC-` |
+| **Step-Down Buck Converter** | USB A | ESP32-S3 USB C |
+| **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
 
 <!--
 ## References
