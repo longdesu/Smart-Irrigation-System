@@ -1,3 +1,23 @@
+## Table of Contents
+
+1. [Project Overview](#project-overview)
+2. [Bill of Materials](#bill-of-materials)
+3. [Pinout & Wiring Diagram](#pinout--wiring-diagram)
+   - [ESP32-S3 Pinout](#1-esp32-s3-pinout-1)
+   - [IO Shield Pinout](#2-io-shield-pinout-2)
+   - [Wiring Diagram](#3-wiring-diagram)
+   - [ESP32-S3 GPIO Mapping](#4-esp32-s3-gpio-mapping)
+   - [Power Distribution & Actuator Wiring](#5-power-distribution--actuator-wiring)
+4. [Sensors](#sensors)
+5. [System Output](#system-output)
+6. [Hardware Architecture](#hardware-architecture)
+7. [Software Architecture](#software-architecture)
+8. [Testing](#testing)
+9. [Limitations and Future Improvements](#limitations-and-future-improvements)
+10. [Conclusion](#conclusion)
+11. [Citations](#citations)
+
+
 ## Bill of Materials
 
 | Item | Model | Specification|
