@@ -1,14 +1,16 @@
-## Components
+## Bill of Materials
 
-| Component | Model |
-|------------|---------|
-| Microcontroller | ESP32-S3 DevKit |
-| Soil Sensor | Capacitive Soil Moisture Sensor |
-| Water Pump | R385 Water Pump 12VDC |
-| Motor Controller | Relay 12VDC-30A |
-| DC Adapter | 2.1mm Barrel Jack 12VDC-3A |
-| Adpter Cable | Female DC Barrel Jack Cable|
-| DC-DC Converter | 12V → 5V 3A Dual USB Buck Converter |
+| Item | Model | Specification|
+|:------------|:------------|:------------:|
+| Microcontroller | ESP32-S3 DevKit | 16MB Flash - 8MB PSRAM |
+| Expansion Board | MKE-B01 ESP32-S3 DK IO Shield | Breakout |
+| Soil Moisture Sensor | Generic Capacitive Soil Moisture Sensor v2.0 | 3.3V-5V (Analog) |
+| Environmental Sensor | SHTC3 Digital Humidity & Temperature Sensor | 3.3V (I2C) |
+| Motor Controller | 1-Channel Opto-Isolated Relay Module | 12VDC - 30A |
+| DC Power Adapter |  AC/DC Wall Adapter | 12VDC - 3A (5.5x2.1mm) |
+| Step-down Converter | Dual USB Buck Converter | 5VDC - 3A |
+| Water Pump | R385 Water Pump | 12VDC |
+| Adapter Cable | Female DC Barrel Jack Cable| 5.5x2.1mm Jack |
 
 ## Pinout
 <img src="IMG/MKE-K01_1.png">
