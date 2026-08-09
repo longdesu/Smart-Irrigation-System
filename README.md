@@ -46,6 +46,9 @@
 | **Step-Down Buck Converter** | USB A | ESP32-S3 USB C |
 | **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
 
+## Citations:
+[1]
+[2]
 <!--
 ## References
 
