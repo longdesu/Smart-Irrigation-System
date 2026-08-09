@@ -1,7 +1,5 @@
 ## Table of Contents
 
-## Table of Contents
-
 1. [Project Overview](#1-project-overview)
 
 2. [Bill of Materials](#2-bill-of-materials)
