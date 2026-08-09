@@ -14,15 +14,18 @@
 
 ## Pinout & Wiring Diagram
 
-### 1. ESP32-S3 Pinout
+### 1. ESP32-S3 Pinout *[[1]](#cite1)*
 <img src="IMG/MKE-K01_1.png">
 
-### 2. Wiring Diagram
+### 2. IO Shield Pinout *[[2]](#cite2)*
+<img src="IMG/MKE-B01_2.png">
+
+### 3. Wiring Diagram
 <img src="IMG/Schematic.PNG">
 
 ---
 
-### 3. ESP32-S3 GPIO Mapping
+### 4. ESP32-S3 GPIO Mapping
 
 | Component | Component Pin | GPIO Connection | Notes |
 | :--- | :---: | :---: | :--- |
@@ -37,7 +40,7 @@
 
 ---
 
-### 4. Power Distribution & Actuator Wiring
+### 5. Power Distribution & Actuator Wiring
 
 | Source / Device | Pin / Terminal | Connected To |
 | :--- | :---: | :--- |
@@ -47,8 +50,8 @@
 | **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
 
 ## Citations:
-[1]
-[2]
+<a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) Sơ đồ chân.  
+<a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD) Hình ảnh sản phẩm.
 <!--
 ## References
 
