@@ -12,14 +12,44 @@
 | Water Pump | R385 Water Pump | 12VDC |
 | Adapter Cable | Female DC Barrel Jack Cable| 5.5x2.1mm Jack |
 
-## Pinout
+## Pinout & Wiring Diagram
+
+### 1. ESP32-S3 Pinout
 <img src="IMG/MKE-K01_1.png">
 
-## Schematic
+### 2. Wiring Diagram
 <img src="IMG/Schematic.PNG">
 
-## Casing
-<img src="IMG/Casing.jpg">
+---
+
+### 3. ESP32-S3 GPIO Mapping
+
+| Component | Component Pin | GPIO Connection | Notes |
+| :--- | :---: | :---: | :--- |
+| **Soil Moisture Sensor** | VCC | `3V3` | 3.3V Power |
+| | GND | `GND` | Ground |
+| | AOUT | `GPIO 1` | Analog Output Signal |
+| **SHTC3 Temp & Humidity** | VCC | `3V3` | 3.3V Power |
+| | GND | `GND` | Ground |
+| | SDA | `GPIO 8` | I2C Data Line |
+| | SCL | `GPIO 9` | I2C Clock Line |
+| **1-Channel Relay Module** | IN | `GPIO 4` | Relay Trigger Signal |
+
+---
+
+### 4. Power Distribution & Actuator Wiring
+
+| Source / Device | Pin / Terminal | Connected To |
+| :--- | :---: | :--- |
+| **12V DC Adapter** | `+` (Positive) | Buck Converter `IN+` & Relay `COM` |
+| | `-` (Ground) | Buck Converter `IN-`, Pump `(-)`, & ESP32 `GND` |
+| **Step-Down Buck Converter** | USB Out | ESP32-S3 USB Port |
+| **1-Channel Relay Module** | `DC+` (Positive) | 12V DC Adapter `+` |
+| | `DC-` (Ground) | 12V DC Adapter `-` |
+| | `COM` (Common) | 12V DC Adapter `+` |
+| | `NC` (Normally Closed) | Water Pump `(+)` |
+| **R385 Water Pump** | `(+)` Positive | Relay Module `NC` |
+| | `(-)` Negative | Relay Module `DC-` |
 
 <!--
 ## References
