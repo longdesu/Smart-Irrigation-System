@@ -16,6 +16,9 @@
 ## Schematic
 <img src="IMG/Schematic.PNG">
 
+## Casing
+<img src="IMG/Casing.jpg">
+
 <!--
 ## References
 
