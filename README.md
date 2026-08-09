@@ -18,7 +18,7 @@
 11. [Citations](#citations)
 
 
-## Bill of Materials
+## 2. Bill of Materials
 
 | Item | Model | Specification|
 |:------------|:------------|:------------:|
@@ -32,20 +32,20 @@
 | Water Pump | R385 Water Pump | 12VDC |
 | Adapter Cable | Female DC Barrel Jack Cable| 5.5x2.1mm Jack |
 
-## Pinout & Wiring Diagram
+## 3. Pinout & Wiring Diagram
 
-### 1. ESP32-S3 Pinout *[[1]](#cite1)*
+### ESP32-S3 Pinout *[[1]](#cite1)*
 <img src="IMG/MKE-K01_1.png">
 
-### 2. IO Shield Pinout *[[2]](#cite2)*
+### IO Shield Pinout *[[2]](#cite2)*
 <img src="IMG/MKE-B01_2.png">
 
-### 3. Wiring Diagram
+### Wiring Diagram
 <img src="IMG/Schematic.PNG">
 
 ---
 
-### 4. ESP32-S3 GPIO Mapping
+### ESP32-S3 GPIO Mapping
 
 | Component | Component Pin | GPIO Connection | Notes |
 | :--- | :---: | :---: | :--- |
@@ -60,7 +60,7 @@
 
 ---
 
-### 5. Power Distribution & Actuator Wiring
+### Power Distribution & Actuator Wiring
 
 | Source / Device | Pin / Terminal | Connected To |
 | :--- | :---: | :--- |
@@ -69,7 +69,7 @@
 | **Step-Down Buck Converter** | USB A | ESP32-S3 USB C |
 | **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
 
-## Citations:
+## 11. Citations:
 <a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). Sơ đồ chân.  
 <a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). Hình ảnh sản phẩm.
 <!--
