@@ -11,7 +11,7 @@
 4. [Sensors and Hardware Design Decisions](#4-sensors-and-hardware-design-decisions)
 5. [Limitations and Future Improvements](#5-limitations-and-future-improvements)
 6. [Conclusion](#6-conclusion)
-7. [Bibliography](#7-citations)
+7. [Bibliography](#7-bibliography)
 
 ## 1. Project Overview
 
