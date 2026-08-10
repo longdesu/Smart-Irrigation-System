@@ -11,7 +11,7 @@
 4. [Sensors and Hardware Design Decisions](#4-sensors-and-hardware-design-decisions)
 5. [Limitations and Future Improvements](#5-limitations-and-future-improvements)
 6. [Conclusion](#6-conclusion)
-7. [Citations](#7-citations)
+7. [Bibliography](#7-citations)
 
 ## 1. Project Overview
 
@@ -163,7 +163,7 @@ The main disadvantage compared with the original MOSFET design is that the curre
 Pump ON
 Pump OFF
 ```
-## 7. Citations:
+## 7. Bibliography:
 <a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). Sơ đồ chân.  
 
 <a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). Hình ảnh sản phẩm.
