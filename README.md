@@ -1,73 +1,55 @@
 ## Table of Contents
-
 1. [Project Overview](#1-project-overview)
-
 2. [Bill of Materials](#2-bill-of-materials)
-
 3. [Pinout & Wiring Diagram](#3-pinout--wiring-diagram)
    - [ESP32-S3 Pinout](#esp32-s3-pinout)
    - [IO Shield Pinout](#io-shield-pinout)
    - [Wiring Diagram](#wiring-diagram)
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
-
 4. [Sensors](#4-sensors)
    - [Capacitive Soil Moisture Sensor](#capacitive-soil-moisture-sensor)
    - [SHTC3 Temperature & Humidity Sensor](#shtc3-temperature--humidity-sensor)
    - [Sensor Calibration](#sensor-calibration)
-
 5. [Automation Logic](#5-automation-logic)
    - [Soil Moisture Processing](#soil-moisture-processing)
    - [Automatic Watering Decision](#automatic-watering-decision)
    - [Relay and Pump Control](#relay-and-pump-control)
-
 6. [Hardware Architecture](#6-hardware-architecture)
    - [Sensor Layer](#sensor-layer)
    - [Control Layer](#control-layer)
    - [Actuator Layer](#actuator-layer)
    - [Power Architecture](#power-architecture)
-
 7. [Software Architecture](#7-software-architecture)
    - [ESP32 Firmware](#esp32-firmware)
    - [Program Initialization](#program-initialization)
    - [Main Program Loop](#main-program-loop)
    - [Data Processing](#data-processing)
-
 8. [Network Architecture](#8-network-architecture)
    - [System Communication Flow](#system-communication-flow)
    - [ESP32 Network Connection](#esp32-network-connection)
    - [MQTT Broker](#mqtt-broker)
-
 9. [MQTT Communication](#9-mqtt-communication)
    - [MQTT Topics](#mqtt-topics)
    - [Published Sensor Data](#published-sensor-data)
    - [Subscribed Control Data](#subscribed-control-data)
    - [Message Format](#message-format)
-
 10. [Server and Visualizer](#10-server-and-visualizer)
     - [Server-Side Software](#server-side-software)
     - [MQTT Data Handling](#mqtt-data-handling)
     - [Data Visualization](#data-visualization)
-
 11. [System Output](#11-system-output)
     - [Web Browser Interface](#web-browser-interface)
     - [Displayed Sensor Data](#displayed-sensor-data)
     - [Pump Status](#pump-status)
-
 12. [Testing](#12-testing)
     - [Sensor Testing](#sensor-testing)
     - [Automation Testing](#automation-testing)
     - [MQTT Communication Testing](#mqtt-communication-testing)
     - [End-to-End System Testing](#end-to-end-system-testing)
-
 13. [Limitations and Future Improvements](#13-limitations-and-future-improvements)
-
 14. [Conclusion](#14-conclusion)
-
 15. [Citations](#15-citations)
-
-
-
 
 ## 2. Bill of Materials
 
@@ -92,7 +74,7 @@
 <img src="IMG/MKE-B01_2.png">
 
 ### Wiring Diagram
-<img src="IMG/Schematic.PNG">
+<img src="IMG/Wiring.jpg">
 
 ---
 
