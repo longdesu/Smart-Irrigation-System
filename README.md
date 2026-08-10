@@ -77,7 +77,9 @@
 <img src="IMG/Wiring.jpg" width="850">
 
 ### Physical Implementation
-<img src="IMG/irl.png" width="450">
+<p align="center">
+   <img src="IMG/irl.png" width="450">
+</p>
 
 ---
 
