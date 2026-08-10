@@ -5,6 +5,7 @@
    - [ESP32-S3 Pinout](#esp32-s3-pinout)
    - [IO Shield Pinout](#io-shield-pinout)
    - [Wiring Diagram](#wiring-diagram)
+   - [Physical Implementation](#physical-implementation)
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
 5. [Limitations and Future Improvements](#5-limitations-and-future-improvements)
@@ -30,13 +31,19 @@
 ## 3. Pinout & Wiring Diagram
 
 ### ESP32-S3 Pinout *[[1]](#cite1)*
-<img src="IMG/MKE-K01_1.png">
+<p align="center">
+   <img src="IMG/MKE-K01_1.png" width = 850>
+</p>
 
 ### IO Shield Pinout *[[2]](#cite2)*
-<img src="IMG/MKE-B01_2.png">
+<p align="center">
+   <img src="IMG/MKE-B01_2.png" width = 600>
+</p>
 
 ### Wiring Diagram
-<img src="IMG/Wiring.jpg">
+<p align="center">
+   <img src="IMG/Wiring.jpg" width - 850>
+</p>
 
 ### Physical Implementation
 <p align="center">
