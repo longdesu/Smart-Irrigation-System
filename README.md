@@ -78,6 +78,7 @@
 
 ### Physical Implementation
 <img src="IMG/irl.png">
+
 ---
 
 ### ESP32-S3 GPIO Mapping
