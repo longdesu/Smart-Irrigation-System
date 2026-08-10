@@ -30,13 +30,13 @@
 ## 3. Pinout & Wiring Diagram
 
 ### ESP32-S3 Pinout *[[1]](#cite1)*
-<img src="IMG/MKE-K01_1.png" width="700">
+<img src="IMG/MKE-K01_1.png">
 
 ### IO Shield Pinout *[[2]](#cite2)*
-<img src="IMG/MKE-B01_2.png" width="700">
+<img src="IMG/MKE-B01_2.png">
 
 ### Wiring Diagram
-<img src="IMG/Wiring.jpg" width="850">
+<img src="IMG/Wiring.jpg">
 
 ### Physical Implementation
 <p align="center">
