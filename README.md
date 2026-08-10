@@ -9,9 +9,12 @@
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
 4. [Sensors and Hardware Design Decisions](#4-sensors-and-hardware-design-decisions)
-5. [Limitations and Future Improvements](#5-limitations-and-future-improvements)
-6. [Conclusion](#6-conclusion)
-7. [Bibliography](#7-bibliography)
+5. [Hardware Architecture](#5-hardware-architecture)
+6. [Software Architecture](#6-software-architecture)
+7. [System Output](#7-system-output)
+8. [Limitations and Future Improvements](#8-limitations-and-future-improvements)
+9. [Conclusion](#9-conclusion)
+10. [Bibliography](#10-bibliography)
 
 ## 1. Project Overview
 
@@ -129,7 +132,7 @@ During normal operation, the diode does not conduct. When the pump is switched o
 
 This was added to improve the electrical protection and reliability of the pump switching circuit.
 
-## 5. Limitations and Future Improvements
+## 8. Limitations and Future Improvements
 
 ### MOSFET Pump Control Failure
 
@@ -163,7 +166,7 @@ The main disadvantage compared with the original MOSFET design is that the curre
 Pump ON
 Pump OFF
 ```
-## 7. Bibliography:
+## 10. Bibliography:
 <a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). Sơ đồ chân.  
 
 <a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). Hình ảnh sản phẩm.
