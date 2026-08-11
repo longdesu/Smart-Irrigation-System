@@ -132,40 +132,6 @@ During normal operation, the diode does not conduct. When the pump is switched o
 
 This was added to improve the electrical protection and reliability of the pump switching circuit.
 
-## 8. Limitations and Future Improvements
-
-### MOSFET Pump Control Failure
-
-The original design used a MOSFET to control the water pump.
-
-The MOSFET approach was preferred because it would allow the pump to be controlled using PWM. This would make it possible to adjust the average power delivered to the motor and therefore provide more control over the water flow.
-
-The circuit initially worked during early testing. However, during later testing, the pump could no longer be operated through the MOSFET circuit.
-
-The pump still operated when connected directly to its power supply, and an electrical control signal from the ESP32 could also be measured. However, the complete MOSFET switching stage failed to operate the pump reliably.
-
-Because the exact cause could not be identified within the available project time, the MOSFET circuit was replaced with a relay.
-
-Possible causes were not investigated far enough to make a definite conclusion, so this remains one of the unresolved problems of the prototype.
-
----
-
-### Relay as a Practical Replacement
-
-The relay was selected mainly because a reliable working system was required within the available development time.
-
-A suitable compact relay was not available locally, so a **12 VDC relay module with a 30 A contact rating** was used instead.
-
-This relay is physically much larger and has a much higher current rating than required by the water pump. It is therefore electrically oversized for the application.
-
-However, it was readily available and provided reliable ON/OFF control of the pump.
-
-The main disadvantage compared with the original MOSFET design is that the current implementation only provides two pump states:
-
-```text
-Pump ON
-Pump OFF
-```
 ## 10. Bibliography:
 
 <a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT: Sơ đồ chân,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) GitHub, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
