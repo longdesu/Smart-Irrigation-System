@@ -167,13 +167,16 @@ Pump ON
 Pump OFF
 ```
 ## 10. Bibliography:
-<a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). Sơ đồ chân.  
+<a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). MakerEduVn Github Document: ESP32-S3 Dev Kit.
 
-<a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). Hình ảnh sản phẩm.
+<a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). MakerEduVn Github Document: ESP32-S3 DK IO Shield.
+
+<a id="cite3"></a>[3] [#207 Why most Arduino Soil Moisture Sensors suck (incl. solution)](https://www.youtube.com/watch?v=udmJyncDvw0). Andreas SpiessAndre
+
+<a id="cite4"></a>[4] [Capacitive Soil Moisture Sensors don't work correctly + Fix for v2.0 v1.2 Arduino ESP32 Raspberry Pi](https://www.youtube.com/watch?v=IGP38bz-K48). Flaura - Smart Plant Pot.
+
 <!--
 ## References
-
-- [Why most Arduino Soil Moisture Sensors suck](https://www.youtube.com/watch?v=udmJyncDvw0)
 - [ESP32: Build Your Own Smart Home Sensor in 10 Minutes](https://www.youtube.com/watch?v=llA2mdCh7Kc)
 - [Wireless Soil Moisture Sensor Series](https://www.youtube.com/playlist?list=PLUUG94AI2ymwWiahyhoqb7W22lq5oEMo-)
 - [Flaura - Smart Plant Pot](https://www.youtube.com/@FlauraSmartPlantPot/featured)
