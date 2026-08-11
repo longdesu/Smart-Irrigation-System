@@ -167,18 +167,20 @@ Pump ON
 Pump OFF
 ```
 ## 10. Bibliography:
-<a id="cite1"></a>[1] [MakerEdu MKE-K01 ESP32-S3 DevKit](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT). MakerEduVn Github Document: ESP32-S3 Dev Kit.
 
-<a id="cite2"></a>[2] [MakerEdu MKE-B01 ESP32-S3 IO Shield](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD). MakerEduVn Github Document: ESP32-S3 DK IO Shield.
+<a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT: Sơ đồ chân,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) GitHub, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
 
-<a id="cite3"></a>[3] [#207 Why most Arduino Soil Moisture Sensors suck (incl. solution)](https://www.youtube.com/watch?v=udmJyncDvw0). Andreas SpiessAndre
+<a id="cite2"></a>[2] MakerEduVN, ["MakerEdu MKE-B01 ESP32-S3 IO Shield,"](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD) GitHub, `MKE-B01-ESP32-S3-DK-IO-SHIELD/extras/MKE-B01_2.png`, July 2026.
 
-<a id="cite4"></a>[4] [Capacitive Soil Moisture Sensors don't work correctly + Fix for v2.0 v1.2 Arduino ESP32 Raspberry Pi](https://www.youtube.com/watch?v=IGP38bz-K48). Flaura - Smart Plant Pot.
+<a id="cite3"></a>[3] Andreas Spiess, ["#207 Why most Arduino Soil Moisture Sensors suck (incl. solution),"](https://www.youtube.com/watch?v=udmJyncDvw0) YouTube, June 2018. 
+
+<a id="cite4"></a>[4] Flaura - Smart Plant Pot, ["Capacitive Soil Moisture Sensors don't work correctly + Fix for v2.0 v1.2 Arduino ESP32 Raspberry Pi,"](https://www.youtube.com/watch?v=IGP38bz-K48) YouTube, October 2021.
+
+<a id="cite 5"></a>[5] Julian Ilett, ["Flyback Diode to Protect Relay,"](https://www.youtube.com/watch?v=gGBrkVRu_Sk) YouTube, March 2020.
 
 <!--
 ## References
 - [ESP32: Build Your Own Smart Home Sensor in 10 Minutes](https://www.youtube.com/watch?v=llA2mdCh7Kc)
 - [Wireless Soil Moisture Sensor Series](https://www.youtube.com/playlist?list=PLUUG94AI2ymwWiahyhoqb7W22lq5oEMo-)
-- [Flaura - Smart Plant Pot](https://www.youtube.com/@FlauraSmartPlantPot/featured)
 - [Saving Plants - DIY Plant Watering Device](https://github.com/DFRobot/SmartWateringDevice)
 -->
