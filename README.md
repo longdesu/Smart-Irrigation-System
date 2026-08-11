@@ -134,9 +134,9 @@ This was added to improve the electrical protection and reliability of the pump 
 
 ## 10. Bibliography:
 
-<a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) _GitHub_, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
+<a id="cite1"></a>[1] MakerEduVN, "MKE-K01-ESP32-S3-DEV-KIT," GitHub, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026. [Online]. Available: https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT. [Accessed July 27, 2026].
 
-<a id="cite2"></a>[2] MakerEduVN, ["MakerEdu MKE-B01 ESP32-S3 IO Shield,"](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD) _GitHub_, `MKE-B01-ESP32-S3-DK-IO-SHIELD/extras/MKE-B01_2.png`, July 2026.
+<a id="cite2"></a>[2] MakerEduVN, "MakerEdu MKE-B01 ESP32-S3 IO Shield," GitHub, `MKE-B01-ESP32-S3-DK-IO-SHIELD/extras/MKE-B01_2.png`, July 2026. [Online]. Available: https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD. [Accessed August 9, 2026].
 
 <a id="cite3"></a>[3] Andreas Spiess, ["#207 Why most Arduino Soil Moisture Sensors suck (incl. solution),"](https://www.youtube.com/watch?v=udmJyncDvw0) _YouTube_, June 2018. 
 
