@@ -134,7 +134,7 @@ This was added to improve the electrical protection and reliability of the pump 
 
 ## 10. Bibliography:
 
-<a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT: Sơ đồ chân,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) GitHub, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
+<a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) GitHub, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
 
 <a id="cite2"></a>[2] MakerEduVN, ["MakerEdu MKE-B01 ESP32-S3 IO Shield,"](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD) GitHub, `MKE-B01-ESP32-S3-DK-IO-SHIELD/extras/MKE-B01_2.png`, July 2026.
 
