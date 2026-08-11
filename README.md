@@ -134,15 +134,15 @@ This was added to improve the electrical protection and reliability of the pump 
 
 ## 10. Bibliography:
 
-<a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) GitHub, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
+<a id="cite1"></a>[1] MakerEduVN, ["MKE-K01-ESP32-S3-DEV-KIT,"](https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT) _GitHub_, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026.
 
-<a id="cite2"></a>[2] MakerEduVN, ["MakerEdu MKE-B01 ESP32-S3 IO Shield,"](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD) GitHub, `MKE-B01-ESP32-S3-DK-IO-SHIELD/extras/MKE-B01_2.png`, July 2026.
+<a id="cite2"></a>[2] MakerEduVN, ["MakerEdu MKE-B01 ESP32-S3 IO Shield,"](https://github.com/makereduvn/MKE-B01-ESP32-S3-DK-IO-SHIELD) _GitHub_, `MKE-B01-ESP32-S3-DK-IO-SHIELD/extras/MKE-B01_2.png`, July 2026.
 
-<a id="cite3"></a>[3] Andreas Spiess, ["#207 Why most Arduino Soil Moisture Sensors suck (incl. solution),"](https://www.youtube.com/watch?v=udmJyncDvw0) YouTube, June 2018. 
+<a id="cite3"></a>[3] Andreas Spiess, ["#207 Why most Arduino Soil Moisture Sensors suck (incl. solution),"](https://www.youtube.com/watch?v=udmJyncDvw0) _YouTube_, June 2018. 
 
-<a id="cite4"></a>[4] Flaura - Smart Plant Pot, ["Capacitive Soil Moisture Sensors don't work correctly + Fix for v2.0 v1.2 Arduino ESP32 Raspberry Pi,"](https://www.youtube.com/watch?v=IGP38bz-K48) YouTube, October 2021.
+<a id="cite4"></a>[4] Flaura - Smart Plant Pot, ["Capacitive Soil Moisture Sensors don't work correctly + Fix for v2.0 v1.2 Arduino ESP32 Raspberry Pi,"](https://www.youtube.com/watch?v=IGP38bz-K48) _YouTube_, October 2021.
 
-<a id="cite 5"></a>[5] Julian Ilett, ["Flyback Diode to Protect Relay,"](https://www.youtube.com/watch?v=gGBrkVRu_Sk) YouTube, March 2020.
+<a id="cite 5"></a>[5] Julian Ilett, ["Flyback Diode to Protect Relay,"](https://www.youtube.com/watch?v=gGBrkVRu_Sk) _YouTube_, March 2020.
 
 <!--
 ## References
