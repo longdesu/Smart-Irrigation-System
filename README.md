@@ -22,11 +22,11 @@
 | Component             | Model                                       | Specification              |
 | :-------------------- | :------------------------------------------ | :------------------------: |
 | Microcontroller       | MKE-K01 ESP32-S3 DevKit                     | 16MB Flash - 8MB PSRAM     |
-| Expansion Board       | MKE-K01 ESP32-S3 DevKit IO Shield           | GPIO Breakout              |
+| Expansion Board       | MKE-B01 ESP32-S3 DevKit IO Shield           | GPIO Breakout              |
 | Soil Moisture Sensor  | Capacitive Soil Moisture Sensor v2.0        | 3.3V-5V, Analog            |
 | Resistor              | Metal-Film Resistor                         | 1MΩ±1%                     |
 | Environmental Sensor  | SHTC3 Digital Humidity & Temperature Sensor | 1.62V-3.6V, I2C            |
-| Relay Module          | 1-Channel Opto-Isolated Relay               | 12VDC, 30A Max             |
+| Relay Module          | 1-Channel Opto-Isolated Relay               | 12VDC, 30A Contacts        |
 | Flyback Diode         | 1N4007 Silicon Rectifier Diode              | 1A, 1000V                  |
 | DC Power Adapter      | 5.5x2.1mm AC/DC Wall Adapter                | 12VDC, 3A                  |
 | Step-down Converter   | Dual USB Buck Converter                     | 12VDC to 5VDC, 3A          |
