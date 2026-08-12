@@ -35,7 +35,7 @@
 | Water Tubing          | Silicone Tube                               | 2x2m, 6mm ID - 8mm OD      |
 | Electronics Enclosure | Waterproof Plastic Enclosure                | 83x58x33mm, IP65           |
 
-## 3. Pinout & Wiring Diagram
+## 3. Pinout & Wiring
 
 ### ESP32-S3 Pinout *[[1]](#cite1)*
 <p align="center">
