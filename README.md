@@ -1,7 +1,7 @@
 ## Table of Contents
 1. [Project Overview](#1-project-overview)
 2. [Bill of Materials](#2-bill-of-materials)
-3. [Pinout & Wiring Diagram](#3-pinout--wiring-diagram)
+3. [Pinout & Wiring](#3-pinout--wiring)
    - [ESP32-S3 Pinout](#esp32-s3-pinout-1)
    - [IO Shield Pinout](#io-shield-pinout-2)
    - [Wiring Diagram](#wiring-diagram)
@@ -66,7 +66,6 @@
 | | SDA | `GPIO 8` | I2C Data Line |
 | | SCL | `GPIO 9` | I2C Clock Line |
 | **1-Channel Relay Module** | IN | `GPIO 4` | Relay Trigger Signal |
-| **Step-Down Buck Converter** | USB A | USB C |
 
 ---
 
@@ -74,9 +73,12 @@
 
 | Source / Device | Pin / Terminal | Connected To |
 | :--- | :---: | :--- |
-| **12V DC Adapter** | `+` (Positive) | Buck Converter `IN+`, Relay `COM`, Relay `DC+` |
-| | `-` (Ground) | Buck Converter `IN-`, Pump `(-)`, Relay `DC-` |
-| **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
+| **12V Power Adapter** | `+` | Buck Converter `IN+`, Relay `COM`, Relay `DC+` |
+| | `-` | Buck Converter `IN-`, Pump `(-)`, Relay `DC-` |
+| **5V Buck Converter** | `USB-A` | ESP32-S3 `USB-C` |
+| **Relay Module** | `NO` | Water Pump `(+)` |
+| **Flyback Diode** | Stripe `Cathode` | Water Pump `(+)` |
+| | No-Stripe `Anode` | Water Pump `(-)` |
 
 ---
 
