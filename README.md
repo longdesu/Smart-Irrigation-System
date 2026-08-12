@@ -66,6 +66,7 @@
 | | SDA | `GPIO 8` | I2C Data Line |
 | | SCL | `GPIO 9` | I2C Clock Line |
 | **1-Channel Relay Module** | IN | `GPIO 4` | Relay Trigger Signal |
+| **Step-Down Buck Converter** | USB A | USB C |
 
 ---
 
@@ -75,7 +76,6 @@
 | :--- | :---: | :--- |
 | **12V DC Adapter** | `+` (Positive) | Buck Converter `IN+`, Relay `COM`, Relay `DC+` |
 | | `-` (Ground) | Buck Converter `IN-`, Pump `(-)`, Relay `DC-` |
-| **Step-Down Buck Converter** | USB A | ESP32-S3 USB C |
 | **1-Channel Relay Module** | `NO` (Normally Open) | Water Pump `(+)` |
 
 ---
