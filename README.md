@@ -5,7 +5,6 @@
    - [ESP32-S3 Pinout](#esp32-s3-pinout-1)
    - [IO Shield Pinout](#io-shield-pinout-2)
    - [Wiring Diagram](#wiring-diagram)
-   - [Physical Implementation](#physical-implementation)
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
 4. [Sensors and Hardware Design Decisions](#4-sensors-and-hardware-design-decisions)
