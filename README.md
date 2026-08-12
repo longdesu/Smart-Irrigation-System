@@ -49,11 +49,6 @@
    <img src="IMG/Wiring.jpg" width - 850>
 </p>
 
-### Physical Implementation
-<p align="center">
-   <img src="IMG/irl.png" width="450">
-</p>
-
 ---
 
 ### ESP32-S3 GPIO Mapping
