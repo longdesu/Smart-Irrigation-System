@@ -8,7 +8,7 @@
    - [Physical Implementation](#physical-implementation)
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
-4. [Sensors and Hardware Design Decisions](#4-sensors-and-hardware-design-decisions)
+4. [Hardware Decisions & Modifications](#4-hardware-decisions-&-modifications)
 5. [Hardware Architecture](#5-hardware-architecture)
 6. [Software Architecture](#6-software-architecture)
 7. [System Output](#7-system-output)
@@ -90,9 +90,9 @@
 
 ---
 
-## 4. Sensors and Hardware Design Decisions
+## 4. Hardware Decisions & Modifications
 
-### Capacitive Soil Moisture Sensor
+### Soil Moisture Sensor
 
 A capacitive soil moisture sensor was selected instead of a resistive soil moisture sensor.
 
@@ -111,7 +111,7 @@ The raw analog value is later calibrated into a soil moisture percentage before 
 
 ---
 
-### SHTC3 Temperature and Humidity Sensor
+### Temperature and Humidity Sensor
 
 An SHTC3 temperature and humidity sensor is installed inside the enclosure.
 
