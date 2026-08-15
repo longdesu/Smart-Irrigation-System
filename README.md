@@ -8,7 +8,7 @@
    - [Physical Implementation](#physical-implementation)
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
-4. [Hardware Decisions & Modifications](#4-hardware-decisions-&-modifications)
+4. [Hardware Decisions & Modifications](#4-hardware-decisions--modifications)
 5. [Hardware Architecture](#5-hardware-architecture)
 6. [Software Architecture](#6-software-architecture)
 7. [System Output](#7-system-output)
