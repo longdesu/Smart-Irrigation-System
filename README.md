@@ -54,10 +54,12 @@
 </p>
 
 ### Physical Implementation
-<div style="display: flex; justify-content: center; align-items: center; gap: 50px; width: 100%;">
-    <img src="IMG/physical1.jpg" width="300">
-    <img src="IMG/physical2.jpg" width="300">
-</div>
+
+<p align="center">
+    <img src="IMG/physical1.jpg" width="450">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="IMG/physical2.jpg" width="450">
+</p>
 
 ---
 
