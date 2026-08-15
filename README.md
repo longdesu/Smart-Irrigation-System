@@ -57,7 +57,6 @@
 
 <p align="center">
     <img src="IMG/physical1.jpg" width="420">
-    &nbsp;&nbsp;&nbsp;&nbsp;
     <img src="IMG/physical2.jpg" width="420">
 </p>
 
