@@ -56,8 +56,8 @@
 ### Physical Implementation
 
 <p align="center">
-    <img src="IMG/physical1.jpg" width="420">
-    <img src="IMG/physical2.jpg" width="420">
+    <img src="IMG/physical1.jpg" width="400">
+    <img src="IMG/physical2.jpg" width="400">
 </p>
 
 ---
