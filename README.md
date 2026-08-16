@@ -276,15 +276,35 @@ The SHTC3 communicates with the ESP32-S3 using the I2C interface.
 
 ### Flyback Diode for Water Pump
 
-The water pump contains a DC motor, which is an inductive load.
+The R385 water pump is driven by a **12 V DC motor**, which behaves as an inductive load. While the motor is running, energy is stored in its magnetic field. When the relay switches the pump off, this magnetic field collapses and the motor can generate a short **reverse-polarity voltage spike**, known as inductive kickback or flyback voltage [[5]](#cite5).
 
-When the motor is switched off, the collapsing magnetic field can generate a voltage spike in the opposite direction. This transient voltage can interfere with or damage the switching circuit.
+This transient voltage can be much higher than the normal supply voltage. If it is not suppressed, it may cause arcing across the relay contacts and introduce electrical noise or voltage disturbances into the power system. These disturbances can affect sensitive electronics such as the ESP32-S3, potentially causing unstable operation or unexpected resets.
 
-A flyback diode was therefore connected across the water pump.
+For this reason, a **1N4007 flyback diode** was installed directly across the terminals of the pump motor.
 
-During normal operation, the diode does not conduct. When the pump is switched off, the diode provides a path for the inductive current and helps suppress the voltage transient.
+<p align="center">
+    <img src="IMG/motor1.jpg" width="45%">
+    <img src="IMG/motor2.jpg" width="45%">
+</p>
 
-This was added to improve the electrical protection and reliability of the pump switching circuit.
+<p align="center">
+    <em>
+        Figure 4.9. 1N4007 flyback diode installed across the terminals of the R385 water-pump motor.
+        Source: Author.
+    </em>
+</p>
+
+During normal pump operation, the diode is **reverse-biased**, so it does not conduct and has no effect on the motor. When the pump is switched off, the polarity across the motor reverses. The diode then becomes forward-biased and provides a path for the remaining motor current to circulate and decay safely [[5]](#cite5).
+
+Instead of allowing the stored energy in the motor to create a large voltage spike, the diode helps dissipate this energy through the motor and diode path. This provides several protective benefits:
+
+* reduces the voltage spike produced when the motor is switched off;
+* reduces arcing and wear on the relay contacts;
+* reduces electrical noise in the power system;
+* helps prevent switching transients from disturbing the ESP32-S3 and other electronics;
+* improves the reliability of repeated pump switching.
+
+The flyback diode therefore acts as a simple but important **protection component** in the irrigation system. Its purpose is not to supply power to the motor, but to safely handle the inductive energy released when the motor is turned off, protecting both the relay switching circuit and the sensitive control electronics.
 
 ## 10. Bibliography:
 
