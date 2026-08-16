@@ -290,7 +290,6 @@ For this reason, a **1N4007 flyback diode** was installed directly across the te
 <p align="center">
     <em>
         Figure 4.9. 1N4007 flyback diode installed across the terminals of the R385 water-pump motor.
-        Source: Author.
     </em>
 </p>
 
