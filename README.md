@@ -148,7 +148,7 @@ Shortly after the electrodes are energized, **gas bubbles become visible in the 
 After several minutes, the damage becomes severe. One electrode loses its original conductive surface and the copper track is progressively removed. In the demonstration, enough copper is eventually removed that the conductive path becomes interrupted and current stops flowing. At this point, the sensor can no longer operate correctly [[3]](#cite3).
 
 <p align="center">
-    <img src="IMG/unhealthy,jpg.jpg" width="650">
+    <img src="IMG/unhealthy.jpg" width="650">
 </p>
 
 <p align="center">
