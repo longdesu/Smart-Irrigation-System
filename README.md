@@ -327,6 +327,94 @@ Instead of allowing the stored energy in the motor to create a large voltage spi
 
 The flyback diode therefore acts as a simple but important **protection component** in the irrigation system. Its purpose is not to supply power to the motor, but to safely handle the inductive energy released when the motor is turned off, protecting both the relay switching circuit and the sensitive control electronics.
 
+---
+
+## 5. Hardware Architecture
+
+The hardware architecture of the Smart Irrigation System is organized around the **ESP32-S3**, which acts as the central controller. It acquires measurements from the soil-moisture and environmental sensors, processes these measurements, and controls the water pump through a relay module.
+
+The system uses a **12 V DC power supply** as its main power source. The 12 V supply powers the water pump and relay module directly, while a buck converter steps the voltage down to **5 V** for the ESP32-S3. The sensors are then powered from the ESP32-S3's **3.3 V rail**.
+
+```mermaid
+flowchart LR
+    PSU["12 V DC<br>Power Adapter"]
+
+    BUCK["12 V → 5 V<br>Buck Converter"]
+    ESP["ESP32-S3<br>Central Controller"]
+
+    SOIL["Capacitive Soil<br>Moisture Sensor"]
+    SHT["SHTC3<br>Temperature & Humidity Sensor"]
+
+    RELAY["12 V Relay Module"]
+    PUMP["R385<br>12 V Water Pump"]
+    DIODE["1N4007<br>Flyback Diode"]
+
+    PSU --> BUCK
+    BUCK --> ESP
+
+    ESP -->|"3.3 V"| SOIL
+    SOIL -->|"Analog → GPIO 1"| ESP
+
+    ESP -->|"3.3 V"| SHT
+    SHT -->|"I²C SDA GPIO 8<br>SCL GPIO 9"| ESP
+
+    PSU --> RELAY
+    ESP -->|"GPIO 4"| RELAY
+
+    PSU -->|"12 V"| PUMP
+    RELAY -->|"Switches pump supply"| PUMP
+
+    DIODE --- PUMP
+```
+
+<p align="center">
+    <em>
+        Figure 5.1. Hardware architecture of the Smart Irrigation System.
+    </em>
+</p>
+
+### Sensing Layer
+
+The system contains two sensing devices.
+
+The **Capacitive Soil Moisture Sensor v2.0** measures the moisture condition of the soil and produces an analog voltage. Its analog output is connected to **GPIO 1**, where it is measured using the ESP32-S3 ADC. The sensor is powered from 3.3 V. As discussed previously, a **1 MΩ resistor modification** was also applied to improve the response of the sensor's analog-output circuit.
+
+The **SHTC3 temperature and humidity sensor** is installed inside the electronics enclosure to monitor its environmental conditions. It communicates digitally with the ESP32-S3 through the I²C interface, using **GPIO 8 for SDA** and **GPIO 9 for SCL**.
+
+### Control Layer
+
+The **ESP32-S3** is the main processing and control device. The MKE-B01 IO Shield provides convenient access to its GPIO and power connections.
+
+The ESP32-S3 performs three main hardware-level functions:
+
+* acquires the analog soil-moisture measurement;
+* communicates with the SHTC3 environmental sensor;
+* controls the relay responsible for switching the water pump.
+
+The relay control input is connected to **GPIO 4**. This allows the low-voltage ESP32-S3 control signal to switch the separate 12 V pump circuit without requiring the microcontroller to supply the motor current directly.
+
+### Actuation Layer
+
+Water delivery is performed by the **12 V R385 water pump**. Because the pump requires considerably more current than an ESP32-S3 GPIO can provide, it is switched through a dedicated relay.
+
+When irrigation is required, the ESP32-S3 activates the relay, which connects the 12 V supply to the pump. When irrigation is stopped, the relay disconnects the pump.
+
+A **1N4007 flyback diode** is installed directly across the pump motor terminals. The diode suppresses the inductive voltage transient generated when the motor is switched off. This reduces stress on the relay contacts and helps prevent switching noise and voltage disturbances from affecting the ESP32-S3 and other electronics.
+
+### Power Architecture
+
+The system uses two main voltage levels:
+
+|    Voltage   | Devices Supplied                               |
+| :----------: | :--------------------------------------------- |
+|  **12 V DC** | Water pump, relay module, buck-converter input |
+|  **5 V DC**  | ESP32-S3 through USB-C                         |
+| **3.3 V DC** | Soil-moisture sensor and SHTC3 sensor          |
+
+The use of separate voltage levels allows the high-current pump to operate from its required 12 V supply while the ESP32-S3 and sensors operate at their appropriate lower voltages.
+
+Overall, the architecture separates the system into **sensing, control, and actuation stages**. The ESP32-S3 forms the connection between these stages: sensor information is acquired and processed by the controller, while the irrigation output is implemented through the relay and 12 V water pump. This separation prevents the motor load from being driven directly by the microcontroller and provides a more reliable hardware design for automatic irrigation.
+
 ## 10. Bibliography:
 
 <a id="cite1"></a>[1] MakerEduVN, "MKE-K01-ESP32-S3-DEV-KIT," _GitHub_, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026. [Online]. Available: https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT. [Accessed: July 27, 2026].
