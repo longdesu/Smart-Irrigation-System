@@ -419,6 +419,222 @@ The use of separate voltage levels allows the high-current pump to operate from 
 
 Overall, the architecture separates the system into **sensing, control, and actuation stages**. The ESP32-S3 forms the connection between these stages: sensor information is acquired and processed by the controller, while the irrigation output is implemented through the relay and 12 V water pump. This separation prevents the motor load from being driven directly by the microcontroller and provides a more reliable hardware design for automatic irrigation.
 
+## 6. Software Architecture
+
+The ESP32-S3 firmware is responsible for **sensor acquisition, data processing, irrigation control, and preparation of sensor data for communication with the rest of the system**. The program runs continuously and updates the measurements and pump state once per second.
+
+The software is divided logically into four main stages:
+
+1. **Hardware initialization**
+2. **Sensor data acquisition**
+3. **Data processing and calibration**
+4. **Automatic irrigation control**
+
+The processed measurements are also formatted as a structured JSON message. This provides a clear interface for the communication layer, where the data can later be transmitted through MQTT to the self-hosted server.
+
+```mermaid
+flowchart TD
+    START["ESP32-S3 Start"] --> INIT["Initialize ADC, SHTC3<br>and Pump GPIO"]
+
+    INIT --> READ["Read Sensors"]
+
+    READ --> SHT["Temperature & Humidity<br>SHTC3 via I²C"]
+    READ --> SOIL["Soil Moisture<br>ADC via GPIO 1"]
+
+    SHT --> PROCESS["Process Sensor Data"]
+    SOIL --> PROCESS
+
+    PROCESS --> MOIST["Calculate<br>Moisture Percentage"]
+    PROCESS --> DEPTH["Estimate<br>Water Depth"]
+
+    MOIST --> JSON["Create Sensor Data<br>JSON Output"]
+    DEPTH --> JSON
+
+    PROCESS --> CONTROL{"Soil ADC ≥ 2000?"}
+
+    CONTROL -->|Yes| ON["Pump ON"]
+    CONTROL -->|No| OFF["Pump OFF"]
+
+    ON --> WAIT["1 Second Delay"]
+    OFF --> WAIT
+    JSON --> WAIT
+
+    WAIT --> READ
+
+    JSON -. "Communication layer" .-> MQTT["MQTT Broker / Server<br>Covered in next section"]
+```
+
+<p align="center">
+    <em>
+        Figure 6.1. ESP32-S3 software architecture showing sensor acquisition, processing, irrigation control, and the interface to the communication layer.
+    </em>
+</p>
+
+### System Initialization
+
+When the ESP32-S3 starts, the program first initializes the required hardware interfaces.
+
+The ADC resolution is configured to **12 bits**, providing raw analog readings between 0 and 4095. The SHTC3 temperature and humidity sensor is then initialized through I²C. If the SHTC3 cannot be detected, the program stops instead of continuing with invalid environmental measurements.
+
+The pump-control GPIO is also configured as a digital output.
+
+```cpp
+analogReadResolution(12);
+
+if (!shtc3.begin()) {
+    Serial.println("Couldn't find SHTC3");
+    while (1) delay(1);
+}
+
+pinMode(PUMP_PIN, OUTPUT);
+```
+
+After initialization has completed successfully, the program enters its continuous control loop.
+
+### Sensor Data Acquisition
+
+Two types of sensor data are acquired by the ESP32-S3.
+
+The **SHTC3** provides enclosure temperature and relative humidity through the I²C interface:
+
+```cpp
+sensors_event_t humidity, temp;
+shtc3.getEvent(&humidity, &temp);
+```
+
+The capacitive soil moisture sensor produces an analog voltage which is measured through **GPIO 1** using the ESP32-S3 ADC:
+
+```cpp
+int rawValue = analogRead(SOIL_PIN);
+```
+
+The raw soil measurement is retained because it is used both for calibration calculations and for the automatic irrigation decision.
+
+### Soil Moisture Processing
+
+The raw ADC value is converted into an estimated soil moisture percentage using experimentally determined dry and wet reference values:
+
+```cpp
+const int VAL_DRY = 2350;
+const int VAL_WET_SOIL = 1550;
+```
+
+The firmware maps this range to a value between **0% and 100%**:
+
+```cpp
+int moisturePercent =
+    map(rawValue, VAL_DRY, VAL_WET_SOIL, 0, 100);
+
+moisturePercent =
+    constrain(moisturePercent, 0, 100);
+```
+
+A raw value close to the dry calibration point therefore corresponds to approximately **0% moisture**, while values at or below the wet reference are limited to **100%**.
+
+This percentage provides a more understandable representation of soil condition than displaying the raw ADC value alone.
+
+### Water-Depth Calibration and Estimation
+
+Additional calibration measurements were performed by immersing the capacitive sensor at fixed water depths. Multiple ADC measurements were recorded at each depth and averaged to characterize the response of the sensor. The recorded calibration data shows that the sensor output decreases as the immersion depth increases.
+
+| Water Depth | Average ADC Reading |
+| :---------: | :-----------------: |
+|     1 cm    |         1297        |
+|     2 cm    |         1112        |
+|     3 cm    |         1068        |
+|     4 cm    |         1012        |
+|     5 cm    |         982         |
+
+<p align="center">
+    <img src="IMG/soil_moisture_calibration.png" width="700">
+</p>
+
+<p align="center">
+    <em>
+        Figure 6.2. Measured ADC response of the capacitive soil moisture sensor at different immersion depths.
+    </em>
+</p>
+
+The calibration results show that the relationship between water depth and ADC reading is **non-linear**. The largest ADC change occurs at shallow immersion depths. As more of the sensor is submerged, the difference in ADC reading produced by each additional centimetre generally becomes smaller.
+
+For example, increasing the water depth from 1 cm to 2 cm changes the average ADC reading by approximately **185 counts**, whereas increasing the depth from 4 cm to 5 cm changes the reading by only approximately **30 counts**.
+
+This indicates that the **sensor sensitivity generally decreases as the water depth increases**. In other words, the calibration curve becomes flatter at greater immersion depths.
+
+Because of this non-linear response, the firmware does not use one single linear equation for the entire measurement range. Instead, it uses several calibration points and performs **piecewise linear interpolation** between adjacent values.
+
+During later testing of the complete system, the calculated depth was also observed to underestimate the physical water level by approximately **1 cm in the shallow measurement range**. The calibration values used in the final firmware were therefore adjusted empirically based on physical validation.
+
+The final reference points used in the software are:
+
+| Estimated Water Depth | Final ADC Reference |
+| :-------------------: | :-----------------: |
+|          1 cm         |         1550        |
+|          2 cm         |         1300        |
+|          3 cm         |         1113        |
+|          4 cm         |         1068        |
+|          5 cm         |         1012        |
+|          6 cm         |         981         |
+
+The value of **1550** is used as the transition between saturated soil and approximately 1 cm of standing water. The remaining values are based on the measured calibration results with the approximately 1 cm correction applied.
+
+For example, when the ADC reading lies between the 2 cm and 3 cm calibration points, the firmware calculates an intermediate depth using:
+
+```cpp
+if (rawValue > VAL_3CM) {
+    waterDepthCm =
+        2.0 + ((VAL_2CM - rawValue) /
+        (float)(VAL_2CM - VAL_3CM));
+}
+```
+
+The same interpolation method is repeated between the remaining calibration points.
+
+This approach produces a continuous water-depth estimate instead of forcing the output into fixed integer steps. It also allows the software to better account for the reduced sensitivity observed at higher water levels.
+
+### Automatic Irrigation Control
+
+The irrigation decision is currently performed directly by the ESP32-S3 using the soil-moisture ADC measurement.
+
+A threshold of **2000** is used:
+
+```cpp
+if (rawValue >= 2000) {
+    digitalWrite(PUMP_PIN, HIGH);
+}
+else {
+    digitalWrite(PUMP_PIN, LOW);
+}
+```
+
+Because a higher ADC value represents drier soil, the pump is activated when the reading reaches or exceeds 2000. When the reading falls below this threshold, the pump is switched off.
+
+This means that the basic irrigation function remains local to the ESP32-S3. The pump does not depend on the remote server or MQTT connection being available before an irrigation decision can be made.
+
+This separation is useful because the **control loop remains functional even if network communication is temporarily unavailable**.
+
+### Sensor Data Output
+
+After the measurements have been processed, the ESP32-S3 combines the important soil values into a **JSON-formatted data structure**:
+
+```json
+{
+  "raw": 1840,
+  "moisture_percent": 68,
+  "water_depth_cm": 0.00
+}
+```
+
+The current firmware outputs this structure through the serial interface. The structured format provides a convenient interface between the embedded firmware and the later communication layer.
+
+Using JSON also simplifies the transition to MQTT because the processed measurements can be packaged into a message without requiring the server to interpret separate unformatted values.
+
+The overall software data flow can therefore be summarized as:
+
+`Sensors → ESP32-S3 → Calibration & Processing → Irrigation Decision → Structured Data → Communication Layer`
+
+The ESP32-S3 firmware is responsible for acquiring and processing the sensor measurements and controlling the physical irrigation hardware. The next stage of the software architecture extends this local control system by transmitting the processed data through **MQTT** to the project's **self-hosted server**, where it can be stored, processed further, and displayed to the user.
+
 ## 10. Bibliography:
 
 <a id="cite1"></a>[1] MakerEduVN, "MKE-K01-ESP32-S3-DEV-KIT," _GitHub_, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026. [Online]. Available: https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT. [Accessed: July 27, 2026].
