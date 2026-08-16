@@ -9,6 +9,9 @@
    - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
 4. [Hardware Decisions & Modifications](#4-hardware-decisions--modifications)
+   - [Soil Moisture Sensor](#soil-moisture-sensor)
+   - [Temperature and Humidity Sensor](#temperature-and-humidity-sensor)
+   - [Flyback Diode for Water Pump](#flyback-diode-for-water-pump)
 5. [Hardware Architecture](#5-hardware-architecture)
 6. [Software Architecture](#6-software-architecture)
 7. [System Output](#7-system-output)
@@ -271,7 +274,7 @@ The SHTC3 communicates with the ESP32-S3 using the I2C interface.
 
 ---
 
-### Flyback Diode for the Water Pump
+### Flyback Diode for Water Pump
 
 The water pump contains a DC motor, which is an inductive load.
 
