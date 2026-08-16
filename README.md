@@ -94,20 +94,139 @@
 
 ### Soil Moisture Sensor
 
-A capacitive soil moisture sensor was selected instead of a resistive soil moisture sensor.
+A **Capacitive Soil Moisture Sensor v2.0** was selected instead of a conventional resistive soil moisture sensor. The selection was based mainly on the sensing principle, expected durability during continuous installation, and the electrochemical problems associated with exposed resistive electrodes.
 
-A resistive soil moisture sensor measures the electrical conductivity between two exposed electrodes. Although this type of sensor is simple and inexpensive, the exposed electrodes are in direct contact with wet soil and can gradually corrode due to electrochemical effects. The reading can also be affected by the conductivity and salt content of the soil.
+#### Resistive Soil Moisture Sensors
 
-A capacitive soil moisture sensor does not rely on direct current flowing through the soil. Instead, it measures changes in the dielectric properties around the sensing area. This makes it more suitable for long-term installation in an irrigation system because the sensing electrodes are not directly exposed to the soil.
+A typical resistive soil moisture sensor consists of two exposed conductive electrodes inserted into the soil. Electrically, the soil between the two electrodes behaves as a resistance whose value changes with the amount of water present.
 
-For this reason, the capacitive sensor was chosen mainly for:
+In the circuit examined by Spiess [[3]](#cite3), the soil sensor is connected with a **510 kΩ resistor to form a voltage divider**. The analog output corresponds to the voltage produced by this divider. When more of the sensor is placed in water, the resistance between the two electrodes decreases and the analog output voltage also decreases. The controller board additionally contains a comparator for producing a digital threshold output, although the analog signal is more useful when the moisture level is processed directly in software [[3]](#cite3).
 
-- better durability during continuous use;
-- lower risk of electrode corrosion;
-- more stable use for long-term soil monitoring;
-- analog output that can be directly measured by the ESP32-S3 ADC.
+<p align="center">
+    <img src="IMG/resistive%20schematic.jpg" width="750">
+</p>
 
-The raw analog value is later calibrated into a soil moisture percentage before being transmitted to the server.
+<p align="center">
+    <em>Figure 4.1. Resistive moisture sensor and controller circuit illustrating the voltage-divider measurement principle. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+This measurement method is simple; however, it requires an electrical potential to be applied across two conductors that are directly exposed to moist soil. Consequently, current can flow through the water and dissolved ions in the soil. This creates conditions for **electrochemical reactions and electrode corrosion**.
+
+#### Accelerated Corrosion Demonstration
+
+Spiess demonstrates this problem experimentally by placing a resistive sensor in water. To make a process that would normally develop over a much longer period visible within a short demonstration, the electrodes are connected directly to a power supply **without the normal current limitation** [[3]](#cite3).
+
+Therefore, the rate of damage shown in the experiment should not be interpreted as the normal corrosion rate of a sensor installed in soil. Instead, the experiment accelerates the same underlying electrochemical effect that can occur during long-term operation.
+
+<p align="center">
+    <img src="IMG/effect%20acceleration.jpg" width="700">
+</p>
+
+<p align="center">
+    <em>Figure 4.2. Accelerated corrosion experiment in which the resistive electrodes are connected without normal current limitation. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+Shortly after the electrodes are energized, **gas bubbles become visible in the water** and one of the sensor legs begins to change colour. The bubbles show that electrochemical reactions are taking place while current flows through the water. At the same time, the conductive plating on one electrode starts to deteriorate [[3]](#cite3).
+
+<p align="center">
+    <img src="IMG/buble.jpg" width="600">
+</p>
+
+<p align="center">
+    <em>Figure 4.3. Gas bubbles forming around the energized resistive sensor electrodes during the accelerated corrosion test. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+After several minutes, the damage becomes severe. One electrode loses its original conductive surface and the copper track is progressively removed. In the demonstration, enough copper is eventually removed that the conductive path becomes interrupted and current stops flowing. At this point, the sensor can no longer operate correctly [[3]](#cite3).
+
+<p align="center">
+    <img src="IMG/unhealthy,jpg.jpg" width="650">
+</p>
+
+<p align="center">
+    <em>Figure 4.4. Visible deterioration of the resistive sensor electrodes after the accelerated electrolysis test. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+The experiment also demonstrates another undesirable effect: material removed from the electrodes enters the surrounding water. The water becomes visibly discoloured as the electrodes degrade. In an irrigation application, the corresponding environment would be the soil surrounding the plant [[3]](#cite3).
+
+<p align="center">
+    <img src="IMG/polluted.jpg" width="600">
+</p>
+
+<p align="center">
+    <em>Figure 4.5. Discoloration of the surrounding water following electrochemical degradation of the resistive electrodes. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+Simply insulating the two electrodes is not an effective solution for this type of **resistive** sensor. Its operating principle depends on electrical conduction through the material between the electrodes. If the electrodes are completely isolated from the water or soil, the required conduction path is removed and the original resistive measurement principle no longer works [[3]](#cite3).
+
+For a system intended to remain installed in soil and repeatedly measure moisture over a long period, this represents an important disadvantage. Electrode degradation not only reduces sensor lifetime but also changes the electrical properties of the sensing element, which may affect measurement consistency before complete failure occurs.
+
+#### Capacitive Soil Moisture Sensor
+
+A capacitive moisture sensor uses a different sensing principle. Its conductive sensing areas do not need to be directly exposed to the soil. Instead, the insulated conductive regions behave as the plates of a capacitor, and the electrical characteristics of this capacitor change depending on the surrounding moisture [[3]](#cite3).
+
+The capacitive reactance can be expressed as:
+
+$$
+X_C = \frac{1}{2\pi f C}
+$$
+
+where:
+
+- $X_C$ is the capacitive reactance;
+- $f$ is the excitation frequency;
+- $C$ is the capacitance.
+
+As the effective capacitance changes with the surrounding moisture, the capacitive reactance also changes. From the equation, increasing capacitance causes the magnitude of the capacitive reactance to decrease when frequency is kept constant.
+
+<p align="center">
+    <img src="IMG/capacitor%20resistance%20formula.jpg" width="800">
+</p>
+
+<p align="center">
+    <em>Figure 4.6. Relationship between capacitance, excitation frequency and capacitive reactance used to explain capacitive moisture sensing. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+In the capacitive sensor examined by Spiess, a **555-family timer** generates a square-wave excitation signal. One sensing conductor is excited by this signal while the other is connected to ground. When the sensor is surrounded by water or moist soil, the capacitance formed by the insulated sensing conductors changes. A diode and capacitor are then used to smooth the resulting signal and provide an **analog output voltage** that changes with moisture [[3]](#cite3).
+
+<p align="center">
+    <img src="IMG/capacitive%20schematic.jpg" width="800">
+</p>
+
+<p align="center">
+    <em>Figure 4.7. Example circuit of a capacitive soil moisture sensor using a 555-family timer and an isolated sensing element. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+The excitation frequency also affects the usable measurement range. In the experiment presented by Spiess, the largest difference between the minimum and maximum sensor output was observed at approximately **600 kHz to 900 kHz**. The tested capacitive sensor operated at approximately **570 kHz** [[3]](#cite3).
+
+<p align="center">
+    <img src="IMG/frequency.jpg" width="650">
+</p>
+
+<p align="center">
+    <em>Figure 4.8. Effect of excitation frequency on the measurement range of the capacitive moisture sensor. Source: Spiess [[3]](#cite3).</em>
+</p>
+
+The important difference for this project is that the sensing conductors of the capacitive sensor can remain **electrically isolated from the wet soil**. Therefore, moisture measurement does not require the continuous DC conduction path between exposed metal electrodes that causes the corrosion demonstrated with resistive probes.
+
+#### Sensor Selection
+
+The comparison that led to the final sensor selection is summarized below.
+
+| Design Consideration | Resistive Sensor | Capacitive Sensor |
+| :--- | :--- | :--- |
+| Measurement principle | Electrical conduction through soil | Change in capacitance |
+| Exposed sensing conductors | Yes | No exposed sensing copper required |
+| DC current through moist soil | Required for measurement | Not required between exposed electrodes |
+| Electrode corrosion | Significant long-term concern | Corrosion mechanism greatly reduced |
+| Electrode material entering soil | Possible as electrodes degrade | Avoided at the insulated sensing surface |
+| Analog measurement | Available | Available |
+| Suitability for continuous installation | Lower | Better suited to the project |
+
+For these reasons, the **capacitive soil moisture sensor was selected for the Smart Irrigation System**. The main advantage is not simply that it is a different type of moisture sensor, but that its sensing principle removes the exposed DC electrode interface responsible for the degradation demonstrated with resistive sensors.
+
+In this project, the sensor is powered from **3.3 V**, and its analog output is connected to **GPIO 1** of the ESP32-S3. The sensor does not directly provide an absolute soil moisture percentage. Instead, its analog output is measured by the ESP32-S3 ADC and calibrated using experimentally determined dry and wet reference values. The measured ADC value is then converted into an estimated **soil moisture percentage** before being transmitted to the server.
+
+> **Note:** The circuit-level explanation above describes the capacitive sensor examined in reference [[3]](#cite3). Different commercial revisions of capacitive soil moisture sensors may use different components or circuit implementations. The important design principle for this project is the insulated capacitive sensing method rather than the exact PCB implementation.
 
 ---
 
