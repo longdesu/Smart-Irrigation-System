@@ -107,7 +107,10 @@ In the circuit examined by Spiess [[3]](#cite3), the soil sensor is connected wi
 </p>
 
 <p align="center">
-    <em>Figure 4.1. Resistive moisture sensor and controller circuit illustrating the voltage-divider measurement principle. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.1. Resistive moisture sensor and controller circuit illustrating the voltage-divider measurement principle.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 This measurement method is simple; however, it requires an electrical potential to be applied across two conductors that are directly exposed to moist soil. Consequently, current can flow through the water and dissolved ions in the soil. This creates conditions for **electrochemical reactions and electrode corrosion**.
@@ -123,7 +126,10 @@ Therefore, the rate of damage shown in the experiment should not be interpreted 
 </p>
 
 <p align="center">
-    <em>Figure 4.2. Accelerated corrosion experiment in which the resistive electrodes are connected without normal current limitation. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.2. Accelerated corrosion experiment in which the resistive electrodes are connected without normal current limitation.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 Shortly after the electrodes are energized, **gas bubbles become visible in the water** and one of the sensor legs begins to change colour. The bubbles show that electrochemical reactions are taking place while current flows through the water. At the same time, the conductive plating on one electrode starts to deteriorate [[3]](#cite3).
@@ -133,7 +139,10 @@ Shortly after the electrodes are energized, **gas bubbles become visible in the 
 </p>
 
 <p align="center">
-    <em>Figure 4.3. Gas bubbles forming around the energized resistive sensor electrodes during the accelerated corrosion test. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.3. Gas bubbles forming around the energized resistive sensor electrodes during the accelerated corrosion test.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 After several minutes, the damage becomes severe. One electrode loses its original conductive surface and the copper track is progressively removed. In the demonstration, enough copper is eventually removed that the conductive path becomes interrupted and current stops flowing. At this point, the sensor can no longer operate correctly [[3]](#cite3).
@@ -143,7 +152,10 @@ After several minutes, the damage becomes severe. One electrode loses its origin
 </p>
 
 <p align="center">
-    <em>Figure 4.4. Visible deterioration of the resistive sensor electrodes after the accelerated electrolysis test. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.4. Visible deterioration of the resistive sensor electrodes after the accelerated electrolysis test.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 The experiment also demonstrates another undesirable effect: material removed from the electrodes enters the surrounding water. The water becomes visibly discoloured as the electrodes degrade. In an irrigation application, the corresponding environment would be the soil surrounding the plant [[3]](#cite3).
@@ -153,7 +165,10 @@ The experiment also demonstrates another undesirable effect: material removed fr
 </p>
 
 <p align="center">
-    <em>Figure 4.5. Discoloration of the surrounding water following electrochemical degradation of the resistive electrodes. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.5. Discoloration of the surrounding water following electrochemical degradation of the resistive electrodes.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 Simply insulating the two electrodes is not an effective solution for this type of **resistive** sensor. Its operating principle depends on electrical conduction through the material between the electrodes. If the electrodes are completely isolated from the water or soil, the required conduction path is removed and the original resistive measurement principle no longer works [[3]](#cite3).
@@ -183,7 +198,10 @@ As the effective capacitance changes with the surrounding moisture, the capaciti
 </p>
 
 <p align="center">
-    <em>Figure 4.6. Relationship between capacitance, excitation frequency and capacitive reactance used to explain capacitive moisture sensing. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.6. Relationship between capacitance, excitation frequency and capacitive reactance used to explain capacitive moisture sensing.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 In the capacitive sensor examined by Spiess, a **555-family timer** generates a square-wave excitation signal. One sensing conductor is excited by this signal while the other is connected to ground. When the sensor is surrounded by water or moist soil, the capacitance formed by the insulated sensing conductors changes. A diode and capacitor are then used to smooth the resulting signal and provide an **analog output voltage** that changes with moisture [[3]](#cite3).
@@ -193,7 +211,10 @@ In the capacitive sensor examined by Spiess, a **555-family timer** generates a 
 </p>
 
 <p align="center">
-    <em>Figure 4.7. Example circuit of a capacitive soil moisture sensor using a 555-family timer and an isolated sensing element. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.7. Example circuit of a capacitive soil moisture sensor using a 555-family timer and an isolated sensing element.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 The excitation frequency also affects the usable measurement range. In the experiment presented by Spiess, the largest difference between the minimum and maximum sensor output was observed at approximately **600 kHz to 900 kHz**. The tested capacitive sensor operated at approximately **570 kHz** [[3]](#cite3).
@@ -203,7 +224,10 @@ The excitation frequency also affects the usable measurement range. In the exper
 </p>
 
 <p align="center">
-    <em>Figure 4.8. Effect of excitation frequency on the measurement range of the capacitive moisture sensor. Source: Spiess [[3]](#cite3).</em>
+    <em>
+        Figure 4.8. Effect of excitation frequency on the measurement range of the capacitive moisture sensor.
+        Source: Spiess <a href="#cite3">[3]</a>.
+    </em>
 </p>
 
 The important difference for this project is that the sensing conductors of the capacitive sensor can remain **electrically isolated from the wet soil**. Therefore, moisture measurement does not require the continuous DC conduction path between exposed metal electrodes that causes the corrosion demonstrated with resistive probes.
