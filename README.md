@@ -651,7 +651,7 @@ The first demonstration was recorded during the early testing stage and focuses 
 
 The purpose of this test was to verify that changes in the soil-moisture reading could be detected by the ESP32-S3 and used to automatically control the water pump. This provided an initial validation of the sensing and irrigation-control stages before the remaining hardware was fully integrated.
 
-[▶ View Soil Moisture Automation Test](DEMO/demo1.mp4)
+[▶ View Soil Moisture Automation Test](Demo/demo1.mp4)
 
 ### Final Integrated System Demonstration
 
@@ -661,7 +661,7 @@ During this test, the ESP32-S3 reads the capacitive soil moisture sensor togethe
 
 This demonstration verifies that the sensing, processing, environmental monitoring, and irrigation-control functions can operate together as an integrated system.
 
-[▶ View Final Integrated System Demonstration](DEMO/demo2.mp4)
+[▶ View Final Integrated System Demonstration](Demo/demo2.mp4)
 
 Together, the two demonstrations show the progression from an initial functional test of the automatic irrigation logic to the completed enclosed hardware implementation.
 
