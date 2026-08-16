@@ -10,6 +10,7 @@
    - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
 4. [Hardware Decisions & Modifications](#4-hardware-decisions--modifications)
    - [Soil Moisture Sensor](#soil-moisture-sensor)
+   - [Capacitive Sensor Modification](#capacitive-sensor-modification)
    - [Temperature and Humidity Sensor](#temperature-and-humidity-sensor)
    - [Flyback Diode for Water Pump](#flyback-diode-for-water-pump)
 5. [Hardware Architecture](#5-hardware-architecture)
@@ -257,6 +258,27 @@ In this project, the sensor is powered from **3.3 V**, and its analog output is 
 
 ---
 
+#### Capacitive Sensor Modification
+
+Although the capacitive sensor avoids the electrode-corrosion problem of resistive sensors, some low-cost **v1.2/v2.0 capacitive soil moisture sensors contain a PCB design issue**. In the version discussed in [[4]](#cite4), the **1 MΩ resistor associated with the analog-output circuit is not correctly connected to ground**.
+
+The sensor converts the moisture-dependent signal into an analog voltage using a diode and capacitor. The capacitor smooths the signal before it reaches the analog output. A high-value resistor provides a discharge path for this capacitor. Without this path, the capacitor can retain its charge, causing the analog output to respond slowly when the moisture level changes [[4]](#cite4).
+
+To correct this issue, a **1 MΩ ±1% resistor** was added between the sensor's analog-output and ground connections.
+
+<p align="center">
+    <img src="IMG/capacitive1.jpg" width="700">
+</p>
+
+<p align="center">
+    <em>
+        Figure 4.9. Capacitive Soil Moisture Sensor v2.0 with the added 1 MΩ resistor used to correct the analog-output circuit.
+    </em>
+</p>
+
+The modification does not change the capacitive sensing principle. Instead, it improves the analog-output stage by providing the capacitor with a discharge path, allowing the output voltage to respond more consistently to changes in soil moisture. This provides a more suitable analog signal for measurement by the ESP32-S3 ADC.
+
+---
 ### Temperature and Humidity Sensor
 
 An SHTC3 temperature and humidity sensor is installed inside the enclosure.
