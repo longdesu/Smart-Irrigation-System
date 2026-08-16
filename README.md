@@ -641,6 +641,70 @@ The overall software data flow can therefore be summarized as:
 
 The ESP32-S3 firmware is responsible for acquiring and processing the sensor measurements and controlling the physical irrigation hardware. The next stage of the software architecture extends this local control system by transmitting the processed data through **MQTT** to the project's **self-hosted server**, where it can be stored, processed further, and displayed to the user.
 
+## 8. Limitations and Future Improvements
+
+The current Smart Irrigation System successfully performs soil-moisture monitoring and automatic pump control, but several parts of the final design were influenced by component availability, troubleshooting difficulties, and the project deadline. As a result, there are several areas where the system could be made smaller, more power-efficient, and more suitable for long-term deployment.
+
+### Lower-Power Controller and Motor Driver
+
+The original design used an **ESP32-C3 together with a MOSFET-based motor driver**. The intention was to create a smaller and more energy-efficient system than the final ESP32-S3 and relay implementation.
+
+During prototyping, the MOSFET switching circuit initially operated but later could not be switched reliably by the ESP32-C3. Directly driving the switching stage from the supply produced the expected response, and separate LED testing confirmed that the ESP32-C3 GPIO was still producing an output signal. However, the exact cause of the MOSFET-driver problem was not identified. During further troubleshooting, the ESP32-C3 was accidentally damaged by a short circuit.
+
+Because the remaining development time was limited, the controller and switching stage were replaced with an **ESP32-S3, IO shield, and relay module**, which provided a more straightforward and reliable implementation. The available 12 V relay module was rated for 30 A, which is considerably higher than required by the R385 pump. Although functional, this combination occupies considerably more enclosure space than the original ESP32-C3 and MOSFET design.
+
+A future version could return to the ESP32-C3 and use a properly designed logic-level MOSFET driver. This would reduce the physical footprint and remove the continuously energized relay coil. The ESP32-C3 could also make greater use of **deep-sleep operation**, waking periodically to take measurements and returning to sleep when no control action or communication is required. This could substantially reduce the controller's average power consumption.
+
+### Variable Pump Control and Drip Irrigation
+
+The current relay provides only two pump states: **fully ON or fully OFF**. A MOSFET driver would allow the pump to be controlled using PWM, providing the possibility of adjusting the average motor drive according to the required water flow.
+
+This would allow the pump to operate more gently instead of repeatedly switching immediately between zero and full power. PWM itself does not directly guarantee a fixed motor current, so a future current-controlled design would require appropriate electrical feedback if precise current limiting were required. However, variable-speed control could still provide better control over the delivered water flow.
+
+A future irrigation design could also use a **recirculating water reservoir and drip-irrigation network**. Small outlet holes or dedicated drip emitters could distribute water gradually around the plant rather than relying on a comparatively large amount of water delivered directly by the pump. Combining variable pump control with drip irrigation could provide more controlled watering and potentially reduce unnecessary water usage.
+
+### Battery-Powered Operation
+
+The present system requires an external power adapter, which limits where the unit can be installed.
+
+A future version could be designed around a rechargeable battery system. When combined with a lower-power ESP32-C3, deep-sleep operation, and a MOSFET motor driver, battery operation could make the system significantly more portable and reduce its dependence on a nearby electrical outlet.
+
+However, integrating lithium-based batteries would require substantially more attention to electrical safety. A practical design would require appropriate battery protection, charging circuitry, over-current protection, undervoltage protection, and a suitable enclosure. These features were intentionally not implemented in the current project because an improperly designed lithium-battery system can introduce fire and thermal hazards.
+
+### Custom Electronics and PCB Design
+
+The current prototype relies heavily on commercially available development boards and modules. This approach reduced development risk and allowed individual sections of the system to be replaced and tested easily, but it also increases the overall physical size and introduces circuitry that is not necessarily required by the final application.
+
+A more advanced version could replace several pre-built modules with only the required integrated circuits and discrete components. Voltage, current, and operating conditions could then be characterized using appropriate measurement equipment before integrating them into the final system.
+
+The project initially avoided this approach because designing the electronics at component level would have introduced additional development and debugging risk under the available time constraint.
+
+A further improvement would be the development of a **custom PCB** containing the microcontroller, sensor interfaces, motor driver, voltage regulation, and protection circuitry. This could substantially reduce wiring, enclosure volume, and unnecessary module overhead while producing a more compact and power-efficient system.
+
+### Water Reservoir Monitoring
+
+An ultrasonic distance sensor was obtained with the intention of measuring the remaining water level inside the reservoir, but this feature was not completed within the project timeframe.
+
+In a future implementation, the ultrasonic sensor could measure the distance between the sensor and the surface of the water. From the known dimensions of the reservoir, this measurement could be converted into an estimated water level or remaining volume.
+
+This would allow the system to detect when the irrigation reservoir is nearly empty and notify the user before the pump attempts to operate without sufficient water.
+
+### Environmental Safety Monitoring
+
+The SHTC3 currently measures the temperature and relative humidity inside the electronics enclosure, but these measurements are used primarily for monitoring rather than active protection.
+
+A future version could define safe operating limits for enclosure temperature and humidity. If either measurement exceeds its permitted range for a sustained period, the system could generate an alarm through the server interface.
+
+For example, unusually high internal humidity could indicate water ingress or condensation, while excessive temperature could indicate unsuitable environmental conditions or an electrical problem. The server could notify the user that the enclosure should be inspected before the condition causes damage to the electronics.
+
+### Sensor Measurement Limitations
+
+Experimental calibration of the capacitive soil moisture sensor also showed that its response is not linear over the complete sensing area. The change in ADC reading was considerably larger at shallow immersion depths and became progressively smaller as more of the sensor was submerged.
+
+This means that the sensor provides lower sensitivity at greater water depths, making small changes increasingly difficult to distinguish in the upper portion of the measurement range. The current software partially compensates for this behaviour through experimentally determined calibration points and piecewise linear interpolation.
+
+For future development, calibration could be performed using a larger number of measurement points and repeated across different soil types rather than relying primarily on controlled water-immersion testing. This would provide a calibration model that more closely represents the conditions experienced during actual irrigation.
+
 ## 10. Bibliography:
 
 <a id="cite1"></a>[1] MakerEduVN, "MKE-K01-ESP32-S3-DEV-KIT," _GitHub_, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026. [Online]. Available: https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT. [Accessed: July 27, 2026].
