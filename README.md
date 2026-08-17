@@ -19,9 +19,7 @@
    - [Actuation Layer](#actuation-layer)
    - [Power Architecture](#power-architecture)
 6. [Software Architecture](#6-software-architecture)
-   - [System Initialization](#system-initialization)
-   - [Sensor Data Acquisition](#sensor-data-acquisition)
-   - [Soil Moisture Processing](#soil-moisture-processing)
+   - [Sensor Interface & Data Processing](#sensor-interface--data-processing)
    - [Water-Depth Calibration and Estimation](#water-depth-calibration-and-estimation)
    - [Automatic Irrigation Control](#automatic-irrigation-control)
    - [Sensor Data Output](#sensor-data-output)
@@ -476,13 +474,9 @@ flowchart TD
     </em>
 </p>
 
-### System Initialization
+### Sensor Interface & Data Processing
 
-When the ESP32-S3 starts, the program first initializes the required hardware interfaces.
-
-The ADC resolution is configured to **12 bits**, providing raw analog readings between 0 and 4095. The SHTC3 temperature and humidity sensor is then initialized through I²C. If the SHTC3 cannot be detected, the program stops instead of continuing with invalid environmental measurements.
-
-The pump-control GPIO is also configured as a digital output.
+When the ESP32-S3 starts, the firmware initializes the required hardware interfaces. The ADC is configured to **12-bit resolution**, the SHTC3 temperature and humidity sensor is initialized through I²C, and the pump-control GPIO is configured as a digital output.
 
 ```cpp
 analogReadResolution(12);
@@ -495,39 +489,27 @@ if (!shtc3.begin()) {
 pinMode(PUMP_PIN, OUTPUT);
 ```
 
-After initialization has completed successfully, the program enters its continuous control loop.
+After initialization, the ESP32-S3 continuously acquires measurements from the two sensors.
 
-### Sensor Data Acquisition
-
-Two types of sensor data are acquired by the ESP32-S3.
-
-The **SHTC3** provides enclosure temperature and relative humidity through the I²C interface:
+The **SHTC3** provides enclosure temperature and relative humidity:
 
 ```cpp
 sensors_event_t humidity, temp;
 shtc3.getEvent(&humidity, &temp);
 ```
 
-The capacitive soil moisture sensor produces an analog voltage which is measured through **GPIO 1** using the ESP32-S3 ADC:
+The **capacitive soil moisture sensor** is read through GPIO 1 using the ESP32-S3 ADC:
 
 ```cpp
 int rawValue = analogRead(SOIL_PIN);
 ```
 
-The raw soil measurement is retained because it is used both for calibration calculations and for the automatic irrigation decision.
-
-### Soil Moisture Processing
-
-The raw ADC value is converted into an estimated soil moisture percentage using experimentally determined dry and wet reference values:
+The raw soil-moisture ADC value is then converted into an estimated moisture percentage using the experimentally determined dry and wet calibration references:
 
 ```cpp
 const int VAL_DRY = 2350;
 const int VAL_WET_SOIL = 1550;
-```
 
-The firmware maps this range to a value between **0% and 100%**:
-
-```cpp
 int moisturePercent =
     map(rawValue, VAL_DRY, VAL_WET_SOIL, 0, 100);
 
@@ -535,9 +517,9 @@ moisturePercent =
     constrain(moisturePercent, 0, 100);
 ```
 
-A raw value close to the dry calibration point therefore corresponds to approximately **0% moisture**, while values at or below the wet reference are limited to **100%**.
+A reading close to the dry reference corresponds to approximately **0% soil moisture**, while readings at or below the wet reference are limited to **100%**. This provides a more understandable representation of the soil condition than displaying the raw ADC value alone.
 
-This percentage provides a more understandable representation of soil condition than displaying the raw ADC value alone.
+The processed soil measurement is then used for both **water-depth estimation** and **automatic irrigation control** in the following stages of the software.
 
 ### Water-Depth Calibration and Estimation
 
