@@ -643,27 +643,13 @@ The ESP32-S3 firmware is responsible for acquiring and processing the sensor mea
 
 ## 7. System Output
 
-The system output is demonstrated through two recorded tests. The first focuses on validating the soil-moisture automation logic during development, while the second demonstrates the completed hardware after integration into the electronics enclosure.
+### Soil Moisture Sensor & Automatic Pump Test
 
-### Soil Moisture Automation Test
+[▶ View Demo](Demo/demo1.mp4)
 
-The first demonstration was recorded during the early testing stage and focuses mainly on the **capacitive soil moisture sensor and automatic pump-control logic**.
+### Final Enclosed System & Serial Monitor Demonstration
 
-The purpose of this test was to verify that changes in the soil-moisture reading could be detected by the ESP32-S3 and used to automatically control the water pump. This provided an initial validation of the sensing and irrigation-control stages before the remaining hardware was fully integrated.
-
-[▶ View Soil Moisture Automation Test](Demo/demo1.mp4)
-
-### Final Integrated System Demonstration
-
-The second demonstration shows the system after the main hardware components were assembled inside the electronics enclosure.
-
-During this test, the ESP32-S3 reads the capacitive soil moisture sensor together with the SHTC3 temperature and humidity sensor. The Serial Monitor is used to display the measured values, processed soil-moisture information, estimated water depth, and pump-control state in real time.
-
-This demonstration verifies that the sensing, processing, environmental monitoring, and irrigation-control functions can operate together as an integrated system.
-
-[▶ View Final Integrated System Demonstration](Demo/demo2.mp4)
-
-Together, the two demonstrations show the progression from an initial functional test of the automatic irrigation logic to the completed enclosed hardware implementation.
+[▶ View Demo](Demo/demo2.mp4).
 
 ## 8. Limitations and Future Improvements
 
