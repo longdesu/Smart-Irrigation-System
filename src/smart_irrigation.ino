@@ -27,9 +27,9 @@ Adafruit_SHTC3 shtc3 = Adafruit_SHTC3();
 WiFiClient wifi_client;
 PubSubClient mqtt_client;
 
-#define WIFI_SSID "FPT Telecom-EA06"
-#define WIFI_PASS "22805343"
-#define MQTT_HOST "192.168.1.238" //DEPENDING ON SYSTEM CHANGE THIS NIGG
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_PASS "YOUR_WIFI_PASSWORD"
+#define MQTT_HOST "192.168.1.100" // Replace with the broker PC LAN IP
 #define MQTT_PORT 1883
 #define CLIENT_ID "my_first_publisher"
 
@@ -138,12 +138,12 @@ void loop() {
   // Serial.print(rawValue);
     if(rawValue >= 2000){
       Serial.println(" Pump ON");
-      digitalWrite(PUMP_PIN, HIGH);  // Active-LOW relay turns ON
+      digitalWrite(PUMP_PIN, HIGH);  // Relay signal HIGH in this wiring; verify module polarity
     } 
     // Wet threshold: Turn pump OFF
     else {
       Serial.println(" Pump OFF");
-      digitalWrite(PUMP_PIN, LOW); // Active-LOW relay turns OFF
+      digitalWrite(PUMP_PIN, LOW); // Relay signal LOW in this wiring; verify module polarity
     }
       Serial.println("\n\n\n");
   }

@@ -1,0 +1,5 @@
+server/water_moisture.db
+server/__pycache__/
+server/.venv/
+*.pyc
+.env

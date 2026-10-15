@@ -1,34 +1,64 @@
+# Smart Irrigation System
+
+**Automated plant watering with ESP32-S3, MQTT telemetry, and a self-hosted monitoring dashboard**
+
+An IoT-based irrigation prototype built around an **ESP32-S3**, a **capacitive soil-moisture sensor**, an **SHTC3 environmental sensor**, and a **12 V water pump**. The controller waters plants locally based on soil-moisture readings and transmits telemetry over Wi-Fi/MQTT to a laptop-hosted data logger and web dashboard.
+
+![Smart Irrigation System hardware](IMG/physical1.jpg)
+
 ## Table of Contents
 1. [Project Overview](#1-project-overview)
 2. [Bill of Materials](#2-bill-of-materials)
 3. [Pinout & Wiring](#3-pinout--wiring)
-   - [ESP32-S3 Pinout](#esp32-s3-pinout-1)
-   - [IO Shield Pinout](#io-shield-pinout-2)
-   - [Wiring Diagram](#wiring-diagram)
-   - [Physical Implementation](#physical-implementation)
-   - [ESP32-S3 GPIO Mapping](#esp32-s3-gpio-mapping)
-   - [Power Distribution & Actuator Wiring](#power-distribution--actuator-wiring)
 4. [Hardware Decisions & Modifications](#4-hardware-decisions--modifications)
-   - [Soil Moisture Sensor](#soil-moisture-sensor)
-   - [Capacitive Sensor Modification](#capacitive-sensor-modification)
-   - [Temperature and Humidity Sensor](#temperature-and-humidity-sensor)
-   - [Flyback Diode for Water Pump](#flyback-diode-for-water-pump)
 5. [Hardware Architecture](#5-hardware-architecture)
-   - [Sensing Layer](#sensing-layer)
-   - [Control Layer](#control-layer)
-   - [Actuation Layer](#actuation-layer)
-   - [Power Architecture](#power-architecture)
 6. [Software Architecture](#6-software-architecture)
-   - [Sensor Interface & Data Processing](#sensor-interface--data-processing)
-   - [Water-Depth Calibration and Estimation](#water-depth-calibration-and-estimation)
-   - [Automatic Irrigation Control](#automatic-irrigation-control)
-   - [Sensor Data Output](#sensor-data-output)
+   - [ESP32-S3 Monitoring & Irrigation Control](#esp32-s3-monitoring--irrigation-control)
+   - [MQTT Communication](#mqtt-communication)
+   - [Web Backend](#web-backend)
+   - [Web Frontend](#web-frontend)
+   - [Running the Complete System](#running-the-complete-system)
 7. [System Output](#7-system-output)
 8. [Limitations and Future Improvements](#8-limitations-and-future-improvements)
 9. [Conclusion](#9-conclusion)
 10. [Bibliography](#10-bibliography)
 
 ## 1. Project Overview
+
+This Smart Irrigation System is designed to **monitor soil conditions and water a plant automatically** without continuous human intervention. The ESP32-S3 samples a capacitive soil-moisture sensor, measures temperature and relative humidity inside the enclosure with an SHTC3, and switches an R385 pump through a relay. A soil-moisture **ADC threshold of 2000** governs the local watering decision; the pump-control loop does not require an active network connection.
+
+For remote monitoring, a separate firmware version publishes the sensor's raw ADC value and SHTC3 temperature/humidity readings to a **self-hosted MQTT broker** over Wi-Fi. A Python subscriber writes the messages to a local SQLite database. A Flask web application serves a dashboard that displays the latest values, historical charts, and an inferred last-watering time.
+
+**Implemented features**
+
+- Automatic on/off irrigation using a calibrated soil-moisture ADC threshold.
+- Capacitive sensing with a 1 MΩ analog-output modification, plus enclosure temperature/humidity measurement.
+- Serial-monitor readings for raw ADC value, estimated moisture percentage, and experimental standing-water depth.
+- MQTT publish/subscribe telemetry over a local Wi-Fi network.
+- Persistent measurements in SQLite and a Flask/Chart.js dashboard that refreshes every five seconds.
+
+**Project scope:** This is a locally hosted prototype, not a cloud-hosted or internet-secured irrigation product. The published MQTT `moisture` topic contains the **raw ADC reading**, *not* the calculated moisture percentage; the percentage and water-depth estimates are currently printed to Serial rather than sent as MQTT data. The water-depth estimate comes from controlled sensor-immersion calibration and should not be treated as a validated reservoir-level measurement.
+
+**Repository layout**
+
+```text
+Smart-Irrigation-System/
+├── src/
+│   ├── sensors.ino            # Local sensor + automatic pumping demo (Serial)
+│   └── smart_irrigation.ino   # Integrated ESP32-S3 + Wi-Fi/MQTT firmware
+├── server/
+│   ├── db.py                  # SQLite schema initialization
+│   ├── subscribe.py           # MQTT topic subscriber and data logger
+│   ├── view_ref.py            # Flask backend and API
+│   ├── requirements.txt      # Python dependencies
+│   └── templates/
+│       └── index.html        # HTML/JS dashboard using Chart.js
+├── IMG/                      # Hardware and calibration images
+├── Demo/                     # Demonstration videos
+└── README.md
+```
+
+The Python server implementation was provided in the **Group17_2026** report archive and has been included under `server/` in the updated repository package.
 
 ## 2. Bill of Materials
 
@@ -62,7 +92,7 @@
 
 ### Wiring Diagram
 <p align="center">
-   <img src="IMG/Wiring.jpg" width - 850>
+   <img src="IMG/Wiring.jpg" width="850">
 </p>
 
 ### Physical Implementation
@@ -425,16 +455,18 @@ Overall, the architecture separates the system into **sensing, control, and actu
 
 ## 6. Software Architecture
 
-The ESP32-S3 firmware is responsible for **sensor acquisition, data processing, irrigation control, and preparation of sensor data for communication with the rest of the system**. The program runs continuously and updates the measurements and pump state once per second.
+### ESP32-S3 Monitoring & Irrigation Control
 
-The software is divided logically into four main stages:
+The ESP32-S3 firmware is responsible for **sensor acquisition, data processing, irrigation control, and preparation of sensor data for communication with the rest of the system**. The program runs continuously and updates the measurements and pump state approximately once per second.
+
+The embedded part of the software is divided logically into four main stages:
 
 1. **Hardware initialization**
 2. **Sensor data acquisition**
 3. **Data processing and calibration**
 4. **Automatic irrigation control**
 
-The processed measurements are also formatted as a structured JSON message. This provides a clear interface for the communication layer, where the data can later be transmitted through MQTT to the self-hosted server.
+The firmware prints the processed soil measurements as a structured JSON message on Serial. The MQTT-enabled sketch additionally publishes **three numeric values** (raw soil ADC, temperature, and humidity) on separate MQTT topics to a self-hosted broker; it does **not** publish the Serial JSON object.
 
 ```mermaid
 flowchart TD
@@ -474,7 +506,7 @@ flowchart TD
     </em>
 </p>
 
-### Sensor Interface & Data Processing
+#### Sensor Interface & Data Processing
 
 When the ESP32-S3 starts, the firmware initializes the required hardware interfaces. The ADC is configured to **12-bit resolution**, the SHTC3 temperature and humidity sensor is initialized through I²C, and the pump-control GPIO is configured as a digital output.
 
@@ -521,7 +553,7 @@ A reading close to the dry reference corresponds to approximately **0% soil mois
 
 The processed soil measurement is then used for both **water-depth estimation** and **automatic irrigation control** in the following stages of the software.
 
-### Water-Depth Calibration and Estimation
+#### Water-Depth Calibration and Estimation
 
 Additional calibration measurements were performed by immersing the capacitive sensor at fixed water depths. Multiple ADC measurements were recorded at each depth and averaged to characterize the response of the sensor. The recorded calibration data shows that the sensor output decreases as the immersion depth increases.
 
@@ -580,7 +612,7 @@ The same interpolation method is repeated between the remaining calibration poin
 
 This approach produces a continuous water-depth estimate instead of forcing the output into fixed integer steps. It also allows the software to better account for the reduced sensitivity observed at higher water levels.
 
-### Automatic Irrigation Control
+#### Automatic Irrigation Control
 
 The irrigation decision is currently performed directly by the ESP32-S3 using the soil-moisture ADC measurement.
 
@@ -601,7 +633,7 @@ This means that the basic irrigation function remains local to the ESP32-S3. The
 
 This separation is useful because the **control loop remains functional even if network communication is temporarily unavailable**.
 
-### Sensor Data Output
+#### Sensor Data Output
 
 After the measurements have been processed, the ESP32-S3 combines the important soil values into a **JSON-formatted data structure**:
 
@@ -615,13 +647,189 @@ After the measurements have been processed, the ESP32-S3 combines the important 
 
 The current firmware outputs this structure through the serial interface. The structured format provides a convenient interface between the embedded firmware and the later communication layer.
 
-Using JSON also simplifies the transition to MQTT because the processed measurements can be packaged into a message without requiring the server to interpret separate unformatted values.
+This Serial JSON is useful during development and could support richer MQTT messages in a future version. **In the implemented MQTT sketch**, however, telemetry is sent as simple numeric strings on the `moisture`, `temp`, and `humidity` topics.
 
 The overall software data flow can therefore be summarized as:
 
 `Sensors → ESP32-S3 → Calibration & Processing → Irrigation Decision → Structured Data → Communication Layer`
 
-The ESP32-S3 firmware is responsible for acquiring and processing the sensor measurements and controlling the physical irrigation hardware. The next stage of the software architecture extends this local control system by transmitting the processed data through **MQTT** to the project's **self-hosted server**, where it can be stored, processed further, and displayed to the user.
+The ESP32-S3 firmware is responsible for acquiring and processing the sensor measurements and controlling the physical irrigation hardware. The networked firmware extends this local control system by transmitting selected measurements through **MQTT** to the project's **self-hosted server**, where they are logged in SQLite and displayed on a website.
+
+### MQTT Communication
+
+The Computer Networks component turns the standalone embedded controller into a **local-network IoT monitoring system**. It uses a publish/subscribe architecture: the ESP32-S3 produces measurements as an **MQTT publisher**, a laptop runs the **MQTT broker**, and a **Python subscriber** records received data. The Flask web service reads the database rather than subscribing directly from the browser.
+
+```mermaid
+flowchart TD
+    S["Capacitive sensor + SHTC3"] --> E["ESP32-S3: local pump control + MQTT publisher"]
+    E -->|"Wi-Fi / TCP 1883 · 3 MQTT topics"| B["MQTT broker on laptop"]
+    B -->|"Topic subscriptions"| P["Python / Paho subscriber"]
+    P -->|"Insert records"| DB[("SQLite: sensor_data")]
+    DB -->|"SQL queries"| F["Flask API on laptop"]
+    F -->|"HTTP GET :5000 / JSON"| W["Browser / Chart.js dashboard"]
+    E -->|"GPIO 4: independent local control"| R["Relay and 12 V pump"]
+```
+
+#### MQTT Architecture and Network Protocols
+
+| Layer / Component | Protocol or Technology | Role |
+| :--- | :--- | :--- |
+| ESP32-S3 ↔ Wi-Fi access point | IEEE 802.11 / local IP network | Provides network connectivity for the publisher |
+| ESP32-S3 → broker → subscriber | MQTT over TCP, **port 1883** | Sends measurement updates using topic-based publish/subscribe |
+| Python subscriber → storage | SQLite | Stores timestamped readings locally on the laptop |
+| Browser → Flask backend | HTTP, default **port 5000** | Fetches the dashboard and JSON endpoints |
+| Browser visualization | JavaScript + Chart.js | Polls Flask for updates and renders time-series plots |
+
+The broker and Flask server are separate processes. The implementation uses a **local network without TLS or MQTT authentication** in its demonstration configuration. Do not expose MQTT port 1883 or the Flask development server to the public internet. Add authentication, TLS, and deployment hardening before any real remote deployment.
+
+**Published topics (implemented in `src/smart_irrigation.ino`):**
+
+| MQTT Topic | Published Value | Units / Notes | Source |
+| :--- | :--- | :--- | :--- |
+| `moisture` | Raw soil sensor ADC value | ADC counts (0–4095 at 12-bit resolution), **not %** | `analogRead(GPIO 1)` |
+| `temp` | Enclosure temperature | °C | SHTC3 |
+| `humidity` | Enclosure relative humidity | % RH | SHTC3 |
+
+Each topic is published roughly once per second. The project uses MQTT to send monitoring information **from device to server**; no remote pump-control MQTT subscriber or return-command topic is implemented. The local watering threshold remains effective when the dashboard or broker is offline (although the current firmware's initial Wi-Fi connection step can block startup if Wi-Fi is unavailable; see limitations).
+
+#### Publishing from the ESP32-S3
+
+The networked firmware includes the ESP32 Wi-Fi and `PubSubClient` libraries, then configures the broker and client:
+
+```cpp
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <PubSubClient.h>
+
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_PASS "YOUR_WIFI_PASSWORD"
+#define MQTT_HOST "192.168.1.100"  // Replace with your broker PC's LAN IPv4
+#define MQTT_PORT 1883
+#define CLIENT_ID "my_first_publisher"
+```
+
+**Important:** `MQTT_HOST` must be the laptop's **LAN IPv4 address** as seen from the ESP32. The Python subscriber may use `127.0.0.1` when the broker and subscriber run on the same laptop. Both clients must connect to **the same broker**. Do not commit real Wi-Fi passwords to a public repository.
+
+The firmware connects to Wi-Fi, connects to the MQTT broker, and publishes numeric strings:
+
+```cpp
+char msg[20];
+
+sprintf(msg, "%d", rawValue);
+mqtt_client.publish("moisture", msg);
+
+dtostrf(temp.temperature, 4, 2, msg);
+mqtt_client.publish("temp", msg);
+
+dtostrf(humidity.relative_humidity, 4, 2, msg);
+mqtt_client.publish("humidity", msg);
+```
+
+`mqtt_client.loop()` maintains the MQTT client; the sketch also attempts a broker reconnection when disconnected. The numeric payloads allow a subscriber to parse readings directly as floating-point values. **The UART JSON object is a separate Serial output, not the payload sent to the broker.**
+
+#### Python MQTT Subscriber
+
+The server uses [`paho-mqtt`](https://pypi.org/project/paho-mqtt/) in `server/subscribe.py`. After the connection is established, it subscribes to all three topics:
+
+```python
+client.subscribe("moisture")
+client.subscribe("temp")
+client.subscribe("humidity")
+```
+
+For each received message it decodes the numeric payload, labels the measurement by its topic, and inserts a new database record with the **subscriber's local receive time**. It does not reconstruct the ESP32 Serial-only moisture percentage or water-depth values.
+
+#### SQLite Database
+
+The `server/db.py` script creates `server/water_moisture.db` and its `sensor_data` table:
+
+| Column | SQLite Type | Description |
+| :--- | :--- | :--- |
+| `id` | INTEGER PRIMARY KEY | Auto-incrementing measurement identifier |
+| `time` | TEXT | Local reception time formatted `YYYY-MM-DD HH:MM` |
+| `topic` | TEXT | `moisture`, `temp`, or `humidity` |
+| `value` | REAL | Parsed numeric MQTT payload |
+
+Readings are stored independently for each topic. The timestamps are recorded only to the **minute** in this version, so samples within a minute share the same visible timestamp. The local database is generated at runtime and is not required to be committed to Git.
+
+### Web Backend
+
+The monitoring backend uses **Flask** (`server/view_ref.py`) and SQLite. Flask serves the dashboard from `server/templates/index.html` and exposes three HTTP endpoints, all responding with JSON except the homepage:
+
+| Route | Function | Response |
+| :--- | :--- | :--- |
+| `/` | Web dashboard | HTML page |
+| `/data/latest` | Most recent measurement for each MQTT topic | `time` and `value` per topic |
+| `/data/graph` | Last **48 records per topic** in chronological display order | Arrays of timestamp/value pairs |
+| `/data/last-watered` | Inferred most recent dry-threshold crossing | Time or `N/A` |
+
+For `/data/latest`, the backend selects the latest row by descending `id`; for the chart endpoint it obtains the newest 48 readings of each topic and then reverses them so the graph runs oldest-to-newest.
+
+**About “Last time watered”:** the backend currently estimates this from a transition of `moisture` raw ADC **from below 2000 to 2000 or above** using SQL `LAG()`. This is an **inferred pump-start event**, not a separately logged pump-state confirmation. It may differ from the actual watering time if MQTT messages are dropped, the controller restarts, or the signal fluctuates around the threshold.
+
+### Web Frontend
+
+The dashboard (`server/templates/index.html`) uses **HTML, CSS, and JavaScript** with [Chart.js](https://www.chartjs.org/) to display latest sensor readings and three historical line charts. When the page opens, it makes requests to the Flask endpoints; JavaScript repeats the requests every **five seconds**.
+
+```javascript
+fetchAndUpdateData();
+setInterval(fetchAndUpdateData, 5000);
+```
+
+The dashboard has separate panels for **raw soil moisture (ADC counts)**, **temperature (°C)**, and **relative humidity (% RH)**, plus the estimated last-watering timestamp. Chart.js is loaded from a CDN, so the graphs require the browser to be able to retrieve that library (or a locally hosted copy).
+
+![Sensor Data Dashboard](IMG/dashboard.png)
+
+*Dashboard screenshot extracted from the team's project report.*
+
+### Running the Complete System
+
+The following steps describe the integrated demonstration on a **trusted local Wi-Fi network**. The broker, subscriber, SQLite file, and Flask server run on the same computer.
+
+**1. Flash the MQTT-enabled firmware**
+
+- Install the ESP32 board support package and the Arduino libraries **Adafruit SHTC3**, **Adafruit Unified Sensor**, and **PubSubClient** (plus the dependencies requested by the library manager).
+- Open `src/smart_irrigation.ino` in Arduino IDE using an ESP32-S3-compatible board configuration.
+- Edit `WIFI_SSID`, `WIFI_PASS`, and `MQTT_HOST`. Point `MQTT_HOST` at the broker PC's LAN IPv4 address, not `localhost`.
+- Upload the sketch; use the **115200-baud** Serial Monitor to check sensor readings and connection messages.
+
+For a sensor-only, offline demo, use `src/sensors.ino` instead.
+
+**2. Start a local MQTT broker**
+
+Install a local MQTT broker such as **Eclipse Mosquitto**. Configure it to listen on TCP **1883** on the local network interface, and allow only the appropriate local clients through the computer's firewall. Recent Mosquitto installations may default to loopback-only mode; this must be configured if the ESP32 is connecting from another device. The initial prototype uses unencrypted local-network MQTT and is **not appropriate for public internet exposure**.
+
+**3. Start the subscriber and create the database**
+
+From the repository root, install the Python dependencies and initialize the SQLite table:
+
+```bash
+python -m pip install -r server/requirements.txt
+cd server
+python db.py
+```
+
+Set `MQTT_HOST` to your broker address if it is not on the same PC (`MQTT_PORT` defaults to 1883), and run the subscriber in a terminal:
+
+```bash
+python subscribe.py
+```
+
+By default, the bundled subscriber connects to `127.0.0.1:1883`, suitable when Mosquitto and Python are on the same laptop. Incoming messages are saved to `server/water_moisture.db`.
+
+**4. Run the web dashboard**
+
+Open a **second terminal** in `server/`, then run:
+
+```bash
+python view_ref.py
+```
+
+Open **http://127.0.0.1:5000/** in a browser on the host PC. The dashboard polls every five seconds. By default, Flask's development server is bound to localhost; viewing it from a second device would require an appropriate network bind, firewall rule, and a safer deployment configuration. Do not use Flask debug mode on an untrusted network.
+
+**5. Check the measurement path**
+
+Verify `ESP32 → broker → Python subscriber → SQLite → Flask → browser` in sequence. If the dashboard is empty, check that (a) the two MQTT clients are using the same broker, (b) the ESP32 can reach port 1883, (c) `subscribe.py` is running, (d) the database has been initialized, and (e) the browser can access Flask's HTTP server.
 
 ## 7. System Output
 
@@ -631,7 +839,13 @@ The ESP32-S3 firmware is responsible for acquiring and processing the sensor mea
 
 ### Final Enclosed System & Serial Monitor Demonstration
 
-[▶ View Demo](Demo/demo2.mp4).
+[▶ View Demo](Demo/demo2.mp4)
+
+### Web Interface & Live-data Demonstration
+
+[▶ View Demo](Demo/demo3.mp4)
+
+The third demonstration shows the integrated, networked monitoring setup described in [MQTT Communication](#mqtt-communication).
 
 ## 8. Limitations and Future Improvements
 
@@ -697,7 +911,13 @@ This means that the sensor provides lower sensitivity at greater water depths, m
 
 For future development, calibration could be performed using a larger number of measurement points and repeated across different soil types rather than relying primarily on controlled water-immersion testing. This would provide a calibration model that more closely represents the conditions experienced during actual irrigation.
 
-## 10. Bibliography:
+## 9. Conclusion
+
+The system demonstrates a complete local **IoT measurement and monitoring pipeline**, combining an embedded sensing/actuation controller with Wi-Fi, an MQTT broker, a subscriber, SQLite storage, and a web dashboard. In the final prototype, the ESP32-S3 can detect dry soil and control the pump independently, while measurements are transmitted for visualization without making the physical control loop depend on the website.
+
+MQTT's publish/subscribe approach decouples the device from its monitoring clients and allows additional consumers of the same sensor topics to be added later. The current system is a working proof of concept rather than a deployment-ready irrigation product: longer-term accuracy, power use, pump-drive hardware, network security, and reservoir sensing all remain areas for improvement.
+
+## 10. Bibliography
 
 <a id="cite1"></a>[1] MakerEduVN, "MKE-K01-ESP32-S3-DEV-KIT," _GitHub_, `MKE-K01-ESP32-S3-DEV-KIT/extras/MKE-K01_1.png`, May 2026. [Online]. Available: https://github.com/makereduvn/MKE-K01-ESP32-S3-DEV-KIT. [Accessed: July 27, 2026].
 
@@ -708,6 +928,9 @@ For future development, calibration could be performed using a larger number of 
 <a id="cite4"></a>[4] Flaura - Smart Plant Pot, "Capacitive Soil Moisture Sensors don't work correctly + Fix for v2.0 v1.2 Arduino ESP32 Raspberry Pi," _YouTube_, October 2021. [Online]. Available: https://www.youtube.com/watch?v=IGP38bz-K48. [Accessed: June 3, 2026].
 
 <a id="cite5"></a>[5] Julian Ilett, "Flyback Diode to Protect Relay," _YouTube_, March 2020. [Online]. Available: https://www.youtube.com/watch?v=gGBrkVRu_Sk. [Accessed: June 9, 2026].
+
+
+<a id="cite6"></a>[6] Rui Santos, "ESP8266 Publishing DHT22 Readings with MQTT to Raspberry Pi," _Random Nerd Tutorials_. [Online]. Available: https://randomnerdtutorials.com/esp8266-publishing-dht22-readings-with-mqtt-to-raspberry-pi/. [Accessed: August 3, 2026].
 
 <!--
 ## References
