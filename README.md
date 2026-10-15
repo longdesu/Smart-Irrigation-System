@@ -4,8 +4,6 @@
 
 An IoT-based irrigation prototype built around an **ESP32-S3**, a **capacitive soil-moisture sensor**, an **SHTC3 environmental sensor**, and a **12 V water pump**. The controller waters plants locally based on soil-moisture readings and transmits telemetry over Wi-Fi/MQTT to a laptop-hosted data logger and web dashboard.
 
-![Smart Irrigation System hardware](IMG/physical1.jpg)
-
 ## Table of Contents
 1. [Project Overview](#1-project-overview)
 2. [Bill of Materials](#2-bill-of-materials)
